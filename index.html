@@ -70,7 +70,7 @@
     .hero-dots::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 65% 50%, rgba(255,255,255,0) 0%, rgba(255,255,255,.85) 65%); }
     .hero-inner { position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%; }
     .hero-label { font-family:var(--mono); font-size:.72rem; color:var(--green); letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
-    .hero-title { font-family:var(--display); font-size:clamp(2.6rem,5vw,5rem); font-weight:800; line-height:1.02; color:var(--ink); }
+    .hero-title { font-family:var(--display); font-size:clamp(1.9rem,3.5vw,3.2rem); font-weight:800; line-height:1.15; color:var(--ink); }
     .hero-title .accent { color:var(--green); }
     .hero-title .outline { -webkit-text-stroke:2px var(--ink); -webkit-text-fill-color:transparent; }
     .hero-desc { margin-top:22px; font-size:.97rem; line-height:1.85; color:var(--gray); max-width:480px; }
@@ -109,7 +109,7 @@
     .sh { margin-bottom:56px; }
     .slabel { font-family:var(--mono); font-size:.68rem; letter-spacing:5px; text-transform:uppercase; color:var(--green); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
     .slabel::before { content:''; display:inline-block; width:24px; height:1.5px; background:var(--green); }
-    .stitle { font-family:var(--display); font-size:clamp(2rem,4vw,3.4rem); font-weight:800; color:var(--ink); line-height:1.06; letter-spacing:-.5px; }
+    .stitle { font-family:var(--display); font-size:clamp(1.7rem,3vw,2.6rem); font-weight:800; color:var(--ink); line-height:1.1; letter-spacing:-.3px; }
     .stitle span { color:var(--green); }
     .sline { width:48px; height:3px; background:linear-gradient(90deg,var(--green),transparent); border-radius:2px; margin-top:16px; }
 
@@ -296,9 +296,7 @@
     <div>
       <p class="hero-label">// portfolio.init() — 15 years experience</p>
       <h1 class="hero-title">
-        Web Developer<br>
-        &amp; <span class="accent">Security</span><br>
-        <span class="outline">Researcher</span>
+        Web Developer &amp; <span class="accent">Security</span> <span class="outline">Researcher</span>
       </h1>
       <p class="hero-desc">
         I build <strong>high-performance web applications</strong> and custom websites using <strong>WordPress, Joomla, Drupal</strong> and more. Also a bug bounty hunter with confirmed findings on <strong>Facebook, VK</strong>, and dozens of other platforms.
@@ -365,7 +363,7 @@
 <section id="about">
   <div class="sh">
     <span class="slabel">// 01 — about.me</span>
-    <h2 class="stitle">The Developer <span>Behind</span> the Code</h2>
+    <h2 class="stitle">About <span>Me</span></h2>
     <div class="sline"></div>
   </div>
   <div class="about-grid">
@@ -608,7 +606,7 @@
       <div class="c-rows">
         <div class="c-row">
           <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="c-info"><span>Email</span><strong>contact@afradev.com</strong></div>
+          <div class="c-info"><span>Email</span><strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9bf8f4f5effaf8efdbfafde9fafffeedb5f8f4f6">[email&#160;protected]</a></strong></div>
         </div>
         <div class="c-row">
           <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
@@ -652,7 +650,7 @@
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Hamburger
   const hamburger = document.getElementById("hamburger");
   const drawer    = document.getElementById("navDrawer");
@@ -704,15 +702,4 @@
         sendBtn.textContent = '✓ Sent!';
       } else {
         formErr.style.display = 'block';
-        sendBtn.textContent = 'Send Message →';
-        sendBtn.disabled = false;
-      }
-    } catch {
-      formErr.style.display = 'block';
-      sendBtn.textContent = 'Send Message →';
-      sendBtn.disabled = false;
-    }
-  });
-</script>
-</body>
-</html>
+        sendBtn.textContent = 'Se
