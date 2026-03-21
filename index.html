@@ -10,15 +10,14 @@
       --green:   #00C853;
       --gdark:   #007E33;
       --ink:     #111111;
-      --white:   #ffffff;
-      --off:     #f5f5f5;
+      --white:   #f0f0f0;
+      --off:     #e8e8e8;
       --gray:    #555;
       --lgray:   #e0e0e0;
       --mono:    'Share Tech Mono', monospace;
       --display: 'Barlow Condensed', sans-serif;
       --body:    'DM Sans', sans-serif;
     }
-
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body { font-family:var(--body); background:var(--white); color:var(--ink); overflow-x:hidden; }
@@ -28,41 +27,48 @@
     .nav-inner { display:flex; align-items:center; justify-content:space-between; height:62px; }
     .nav-logo { font-family:var(--display); font-size:1.4rem; font-weight:800; color:var(--ink); letter-spacing:1px; text-decoration:none; flex-shrink:0; text-transform:uppercase; }
     .nav-logo span { color:var(--green); }
-    .nav-links { display:flex; gap:28px; list-style:none; }
-    .nav-links a { font-size:.78rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--gray); transition:color .2s; position:relative; padding-bottom:3px; }
+    .nav-links { display:flex; gap:24px; list-style:none; }
+    .nav-links a { font-size:.76rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--gray); transition:color .2s; position:relative; padding-bottom:3px; }
     .nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1.5px; background:var(--green); transition:width .3s; }
     .nav-links a:hover { color:var(--green); }
     .nav-links a:hover::after { width:100%; }
     .nav-right { display:flex; align-items:center; gap:16px; }
     .nav-cta { font-family:var(--mono); font-size:.72rem; letter-spacing:1px; padding:7px 16px; border:1.5px solid var(--green); color:var(--green); text-decoration:none; border-radius:2px; transition:background .2s, color .2s; white-space:nowrap; }
     .nav-cta:hover { background:var(--green); color:#fff; }
-
-    /* Hamburger */
     .hamburger { display:none; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:36px; height:36px; cursor:pointer; background:none; border:none; padding:4px; }
     .hamburger span { display:block; width:22px; height:2px; background:var(--ink); border-radius:2px; transition:transform .3s, opacity .3s, width .3s; transform-origin:center; }
     .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity:0; width:0; }
     .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
-
-    /* Mobile drawer */
     .nav-drawer { display:none; position:fixed; top:62px; left:0; right:0; bottom:0; background:rgba(255,255,255,.98); backdrop-filter:blur(20px); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:20px; opacity:0; pointer-events:none; transition:opacity .3s ease; }
     .nav-drawer.open { opacity:1; pointer-events:all; }
-    .nav-drawer a { font-family:var(--display); font-size:1.6rem; font-weight:800; text-decoration:none; color:var(--ink); letter-spacing:1px; padding:10px 20px; width:100%; text-align:center; border-radius:4px; transition:color .2s, background .2s; }
+    .nav-drawer a { font-family:var(--display); font-size:1.6rem; font-weight:800; text-decoration:none; color:var(--ink); letter-spacing:1px; padding:10px 20px; width:100%; text-align:center; border-radius:4px; transition:color .2s, background .2s; text-transform:uppercase; }
     .nav-drawer a:hover { color:var(--green); background:rgba(0,200,83,.05); }
     .nav-drawer .drawer-cta { margin-top:10px; font-family:var(--mono); font-size:.85rem; letter-spacing:2px; text-transform:uppercase; padding:12px 32px; background:var(--green); color:#fff; border-radius:2px; width:auto; }
     .nav-drawer .drawer-cta:hover { background:var(--gdark); color:#fff; }
 
     /* ── DOTS BAR ── */
     .nav-dots { display:flex; align-items:center; justify-content:center; height:32px; background:var(--ink); position:fixed; top:62px; left:0; right:0; z-index:99; border-bottom:1px solid #1a1a1a; }
-    .nav-dots-inner { display:flex; align-items:center; white-space:nowrap; }
-    .ndot-link { display:inline-flex; align-items:center; gap:7px; text-decoration:none; cursor:pointer; padding:0 16px; height:32px; border-right:1px solid #1e1e1e; transition:background .2s; }
+    .nav-dots-inner { display:flex; align-items:center; }
+    .ndot-link { display:inline-flex; align-items:center; gap:7px; text-decoration:none; cursor:pointer; padding:0 14px; height:32px; border-right:1px solid #1e1e1e; transition:background .2s; }
     .ndot-link:first-child { border-left:1px solid #1e1e1e; }
-    .ndot-link:hover { background:rgba(0,200,83,.08); }
+    .ndot-link:hover, .ndot-link.active-link { background:rgba(0,200,83,.08); }
     .ndot-link:hover .ndot, .ndot-link.active-link .ndot { opacity:1; box-shadow:0 0 8px var(--green); }
     .ndot-link:hover .ndot-label, .ndot-link.active-link .ndot-label { color:var(--green); }
     .ndot { width:6px; height:6px; border-radius:50%; background:var(--green); opacity:.3; flex-shrink:0; transition:opacity .3s, box-shadow .3s; }
     .ndot.active { opacity:1; box-shadow:0 0 7px var(--green); }
-    .ndot-label { font-family:var(--mono); font-size:.58rem; color:#555; letter-spacing:2px; text-transform:uppercase; transition:color .2s; }
+    .ndot-label { font-family:var(--mono); font-size:.55rem; color:#555; letter-spacing:2px; text-transform:uppercase; transition:color .2s; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding:96px 6%; }
+    .sh { margin-bottom:52px; }
+    .slabel { font-family:var(--mono); font-size:.68rem; letter-spacing:5px; text-transform:uppercase; color:var(--green); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+    .slabel::before { content:''; display:inline-block; width:24px; height:1.5px; background:var(--green); }
+    .stitle { font-family:var(--display); font-size:clamp(1.8rem,2.8vw,2.8rem); font-weight:800; color:var(--ink); line-height:1.18; letter-spacing:normal; text-transform:uppercase; }
+    .stitle span { color:var(--green); }
+    .sline { width:48px; height:3px; background:linear-gradient(90deg,var(--green),transparent); border-radius:2px; margin-top:14px; }
+    .dark-section { background:var(--ink); color:var(--white); }
+    .dark-section .stitle { color:var(--white); }
 
     /* ── HERO ── */
     #hero { min-height:100vh; display:flex; align-items:center; padding:150px 6% 80px; position:relative; overflow:hidden; background:var(--white); }
@@ -70,7 +76,7 @@
     .hero-dots::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 65% 50%, rgba(255,255,255,0) 0%, rgba(255,255,255,.85) 65%); }
     .hero-inner { position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%; }
     .hero-label { font-family:var(--mono); font-size:.72rem; color:var(--green); letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
-    .hero-title { font-family:var(--display); font-size:clamp(2.2rem,3.6vw,3.4rem); font-weight:800; line-height:1.12; color:var(--ink); letter-spacing:.5px; text-transform:uppercase; }
+    .hero-title { font-family:var(--display); font-size:clamp(1.8rem,2.8vw,2.8rem); font-weight:800; line-height:1.18; color:var(--ink); letter-spacing:normal; text-transform:uppercase; }
     .hero-title .accent { color:var(--green); }
     .hero-title .outline { -webkit-text-stroke:2px var(--ink); -webkit-text-fill-color:transparent; }
     .hero-desc { margin-top:22px; font-size:.97rem; line-height:1.85; color:var(--gray); max-width:480px; }
@@ -83,8 +89,6 @@
     .btn-dark:hover { background:var(--green); border-color:var(--green); }
     .btn-border { padding:12px 30px; background:transparent; color:var(--ink); font-family:var(--mono); font-size:.76rem; letter-spacing:2px; text-transform:uppercase; text-decoration:none; border-radius:2px; border:2px solid var(--ink); transition:border-color .2s, color .2s; }
     .btn-border:hover { border-color:var(--green); color:var(--green); }
-
-    /* Terminal */
     .terminal { background:var(--ink); border-radius:8px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.12); }
     .term-bar { background:#1c1c1c; padding:10px 16px; display:flex; align-items:center; gap:7px; }
     .td { width:11px; height:11px; border-radius:50%; }
@@ -92,7 +96,7 @@
     .term-title { font-size:.7rem; color:#555; margin:0 auto; letter-spacing:1px; font-family:var(--mono); }
     .term-body { padding:22px; font-family:var(--mono); font-size:.8rem; line-height:2.1; color:#ccc; }
     .tl { display:block; }
-    .tg { color:var(--green); } .tgr { color:#555; } .tw { color:#eee; } .tgold { color:#FFD600; }
+    .tg{color:var(--green);} .tgr{color:#555;} .tw{color:#eee;} .tgold{color:#FFD600;}
     .blink { display:inline-block; width:8px; height:14px; background:var(--green); animation:bl .8s step-end infinite; vertical-align:middle; margin-left:2px; }
     @keyframes bl { 0%,100%{opacity:1} 50%{opacity:0} }
 
@@ -104,23 +108,9 @@
     .ti svg { width:13px; height:13px; stroke:var(--green); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .tsep { color:#333; }
 
-    /* ── SECTION COMMONS ── */
-    section { padding:96px 6%; }
-    .sh { margin-bottom:56px; }
-    .slabel { font-family:var(--mono); font-size:.68rem; letter-spacing:5px; text-transform:uppercase; color:var(--green); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
-    .slabel::before { content:''; display:inline-block; width:24px; height:1.5px; background:var(--green); }
-    .stitle { font-family:var(--display); font-size:clamp(1.9rem,2.8vw,2.6rem); font-weight:800; color:var(--ink); line-height:1.12; letter-spacing:.5px; text-transform:uppercase; }
-    .stitle span { color:var(--green); }
-    .sline { width:48px; height:3px; background:linear-gradient(90deg,var(--green),transparent); border-radius:2px; margin-top:16px; }
-
-    /* Dark section overrides */
-    .dark-section { background:var(--ink); color:var(--white); }
-    .dark-section .slabel::before { background:var(--green); }
-    .dark-section .stitle { color:var(--white); }
-
     /* ── ABOUT ── */
     #about { background:var(--off); }
-    .about-grid { display:grid; grid-template-columns:320px 1fr; gap:64px; align-items:start; }
+    .about-grid { display:grid; grid-template-columns:300px 1fr; gap:64px; align-items:start; }
     .photo-wrap { position:relative; }
     .photo-box { width:100%; aspect-ratio:3/4; border-radius:6px; overflow:hidden; border:2px solid var(--lgray); }
     .photo-box img { width:100%; height:100%; object-fit:cover; display:block; }
@@ -137,8 +127,8 @@
 
     /* ── SECURITY RESEARCH ── */
     .research-intro { font-size:.95rem; color:#888; line-height:1.8; max-width:640px; margin-bottom:52px; }
-    .vuln-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
-    .vuln-card { background:#111; border:1px solid #222; border-radius:6px; padding:24px; position:relative; overflow:hidden; transition:border-color .3s, transform .3s, box-shadow .3s; }
+    .vuln-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; }
+    .vuln-card { background:#141414; border:1px solid #222; border-radius:6px; padding:24px; position:relative; overflow:hidden; transition:border-color .3s, transform .3s, box-shadow .3s; }
     .vuln-card:hover { border-color:var(--green); transform:translateY(-3px); box-shadow:0 10px 32px rgba(0,200,83,.08); }
     .vuln-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--green); opacity:.5; transition:opacity .3s; }
     .vuln-card:hover::before { opacity:1; }
@@ -148,7 +138,7 @@
     .vc-crit { background:rgba(229,57,53,.12); color:#e53935; border:1px solid rgba(229,57,53,.25); }
     .vc-high { background:rgba(244,81,30,.12); color:#f4511e; border:1px solid rgba(244,81,30,.25); }
     .vc-med  { background:rgba(249,168,37,.12); color:#f9a825; border:1px solid rgba(249,168,37,.25); }
-    .vuln-name { font-family:var(--display); font-size:1.05rem; font-weight:700; color:var(--white); margin-bottom:4px; }
+    .vuln-name { font-family:var(--display); font-size:1.05rem; font-weight:700; color:var(--white); margin-bottom:4px; text-transform:uppercase; }
     .vuln-cwe  { font-family:var(--mono); font-size:.65rem; color:var(--green); letter-spacing:1px; margin-bottom:10px; }
     .vuln-desc { font-size:.82rem; color:#777; line-height:1.7; }
 
@@ -163,13 +153,13 @@
     .sev-c { background:rgba(229,57,53,.08); color:#e53935; border:1px solid rgba(229,57,53,.25); }
     .sev-h { background:rgba(244,81,30,.08); color:#f4511e; border:1px solid rgba(244,81,30,.25); }
     .sev-m { background:rgba(249,168,37,.08); color:#f9a825; border:1px solid rgba(249,168,37,.25); }
-    .bug-target { font-family:var(--display); font-size:1.15rem; font-weight:700; color:var(--ink); margin-bottom:10px; }
+    .bug-target { font-family:var(--display); font-size:1.15rem; font-weight:700; color:var(--ink); margin-bottom:10px; text-transform:uppercase; }
     .bug-desc { font-size:.83rem; color:var(--gray); line-height:1.7; }
 
     /* ── SKILLS ── */
     #skills { background:var(--off); }
     .skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; }
-    .sg-title { font-family:var(--display); font-weight:700; font-size:1.05rem; color:var(--ink); margin-bottom:22px; padding-bottom:10px; border-bottom:2px solid var(--green); }
+    .sg-title { font-family:var(--display); font-weight:800; font-size:1.05rem; color:var(--ink); margin-bottom:22px; padding-bottom:10px; border-bottom:2px solid var(--green); text-transform:uppercase; letter-spacing:.5px; }
     .sg-title.mt { margin-top:32px; }
     .sk-list { display:flex; flex-direction:column; gap:14px; }
     .sk-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
@@ -178,10 +168,6 @@
     .sk-pct { font-family:var(--mono); font-size:.76rem; color:var(--green); }
     .sk-bar { height:4px; background:var(--lgray); border-radius:2px; overflow:hidden; }
     .sk-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--gdark)); border-radius:2px; }
-    .chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
-    .chip { font-family:var(--mono); font-size:.7rem; letter-spacing:1px; padding:5px 12px; border:1px solid var(--lgray); border-radius:2px; color:var(--gray); background:var(--white); transition:border-color .2s, color .2s; }
-    .chip:hover { border-color:var(--green); color:var(--green); }
-    /* Tool icon chips */
     .tool-chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
     .tool-chip { display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:.68rem; letter-spacing:1px; padding:6px 14px; border:1px solid var(--lgray); border-radius:4px; color:var(--gray); background:var(--white); transition:border-color .25s, color .25s, background .25s; cursor:default; }
     .tool-chip:hover { border-color:var(--green); color:var(--ink); background:rgba(0,200,83,.05); }
@@ -201,7 +187,7 @@
     .proj-body { padding:22px; }
     .proj-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
     .pt { font-family:var(--mono); font-size:.63rem; letter-spacing:1px; color:var(--green); background:rgba(0,200,83,.07); border:1px solid rgba(0,200,83,.2); padding:3px 9px; border-radius:2px; }
-    .proj-title { font-family:var(--display); font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:7px; }
+    .proj-title { font-family:var(--display); font-size:1.1rem; font-weight:800; color:var(--ink); margin-bottom:7px; text-transform:uppercase; }
     .proj-desc { font-size:.83rem; color:var(--gray); line-height:1.7; margin-bottom:14px; }
     .proj-link { font-family:var(--mono); font-size:.73rem; color:var(--green); text-decoration:none; letter-spacing:1px; display:inline-flex; align-items:center; gap:5px; transition:gap .2s; }
     .proj-link:hover { gap:10px; }
@@ -227,25 +213,9 @@
     .btn-send { padding:13px 28px; background:var(--green); color:#fff; font-family:var(--mono); font-size:.78rem; letter-spacing:2px; text-transform:uppercase; border:none; border-radius:3px; cursor:pointer; transition:background .2s; align-self:flex-start; }
     .btn-send:hover { background:var(--gdark); }
 
-    /* ── TOOLS ── */
-    #tools { background:var(--ink); }
-    .tools-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:16px; margin-top:8px; }
-    .tool-card {
-      background:#141414; border:1px solid #222; border-radius:8px;
-      padding:24px 16px; display:flex; flex-direction:column; align-items:center; gap:12px;
-      transition:border-color .3s, transform .3s, box-shadow .3s;
-      cursor:default;
-    }
-    .tool-card:hover { border-color:var(--green); transform:translateY(-4px); box-shadow:0 10px 28px rgba(0,200,83,.1); }
-    .tool-logo { width:48px; height:48px; display:flex; align-items:center; justify-content:center; }
-    .tool-logo img { width:48px; height:48px; object-fit:contain; filter:brightness(.9); transition:filter .3s; }
-    .tool-card:hover .tool-logo img { filter:brightness(1); }
-    .tool-name { font-family:var(--mono); font-size:.72rem; color:#aaa; letter-spacing:1.5px; text-transform:uppercase; text-align:center; transition:color .3s; }
-    .tool-card:hover .tool-name { color:var(--green); }
-
     /* ── FOOTER ── */
     footer { background:#060606; padding:26px 6%; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border-top:1px solid #181818; }
-    .f-logo { font-family:var(--display); font-size:1.2rem; font-weight:800; color:var(--white); letter-spacing:1px; }
+    .f-logo { font-family:var(--display); font-size:1.2rem; font-weight:800; color:var(--white); letter-spacing:1px; text-transform:uppercase; }
     .f-logo span { color:var(--green); }
     .f-copy { font-family:var(--mono); font-size:.72rem; color:#3a3a3a; }
     .f-soc { display:flex; gap:14px; }
@@ -319,9 +289,7 @@
       <h1 class="hero-title">
         Web Developer &amp; <span class="accent">Security</span> <span class="outline">Researcher</span>
       </h1>
-      <p class="hero-desc">
-        I build <strong>high-performance web applications</strong> and custom websites using <strong>WordPress, Joomla, Drupal</strong> and more. Also a bug bounty hunter with confirmed findings on <strong>Facebook, VK</strong>, and dozens of other platforms.
-      </p>
+      <p class="hero-desc">I build <strong>high-performance web applications</strong> and custom websites using <strong>WordPress, Joomla, Drupal</strong> and more. Also a bug bounty hunter with confirmed findings on <strong>Facebook, VK</strong>, and dozens of other platforms.</p>
       <div class="hero-tags">
         <span class="tag on">Bug Bounty</span>
         <span class="tag on">Penetration Testing</span>
@@ -369,7 +337,6 @@
     <div class="ti"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>15 Years Experience</div><span class="tsep">·</span>
     <div class="ti"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>Server Security</div><span class="tsep">·</span>
     <div class="ti"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Full-Stack Developer</div><span class="tsep">·</span>
-    <!-- duplicate for loop -->
     <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Facebook — Hall of Fame</div><span class="tsep">·</span>
     <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>VK.com — Bug Bounty</div><span class="tsep">·</span>
     <div class="ti"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>WordPress · Joomla · Drupal</div><span class="tsep">·</span>
@@ -418,54 +385,14 @@
   </div>
   <p class="research-intro">I specialize in identifying and responsibly disclosing vulnerabilities in web applications, APIs, and server infrastructure. Below are the main vulnerability classes I research and hunt.</p>
   <div class="vuln-grid">
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">💉</span><span class="vuln-badge vc-crit">Critical</span></div>
-      <div class="vuln-name">SQL Injection</div>
-      <div class="vuln-cwe">CWE-89 / OWASP A03</div>
-      <p class="vuln-desc">Database manipulation via unsanitized inputs. Can lead to full data exfiltration or remote code execution.</p>
-    </div>
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">🔀</span><span class="vuln-badge vc-high">High</span></div>
-      <div class="vuln-name">XSS</div>
-      <div class="vuln-cwe">CWE-79 / OWASP A03</div>
-      <p class="vuln-desc">Cross-site scripting enables session hijacking, phishing overlays, and client-side malware injection.</p>
-    </div>
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">🔗</span><span class="vuln-badge vc-crit">Critical</span></div>
-      <div class="vuln-name">SSRF</div>
-      <div class="vuln-cwe">CWE-918 / OWASP A10</div>
-      <p class="vuln-desc">Server-side request forgery forces servers to make internal requests, exposing cloud metadata.</p>
-    </div>
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">🔑</span><span class="vuln-badge vc-crit">Critical</span></div>
-      <div class="vuln-name">Broken Auth</div>
-      <div class="vuln-cwe">CWE-287 / OWASP A07</div>
-      <p class="vuln-desc">Weak authentication flows, predictable tokens, or improper session management allow account takeover.</p>
-    </div>
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">📁</span><span class="vuln-badge vc-high">High</span></div>
-      <div class="vuln-name">Path Traversal</div>
-      <div class="vuln-cwe">CWE-22 / OWASP A01</div>
-      <p class="vuln-desc">Directory traversal attacks allow reading arbitrary files outside the web root, leaking sensitive configs.</p>
-    </div>
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">🌐</span><span class="vuln-badge vc-med">Medium</span></div>
-      <div class="vuln-name">CSRF</div>
-      <div class="vuln-cwe">CWE-352 / OWASP A01</div>
-      <p class="vuln-desc">Cross-site request forgery tricks authenticated users into executing unwanted state-changing actions.</p>
-    </div>
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">⚙️</span><span class="vuln-badge vc-med">Medium</span></div>
-      <div class="vuln-name">Misconfiguration</div>
-      <div class="vuln-cwe">CWE-16 / OWASP A05</div>
-      <p class="vuln-desc">Security misconfigs including open S3 buckets, exposed admin panels, and verbose error messages.</p>
-    </div>
-    <div class="vuln-card">
-      <div class="vuln-top"><span class="vuln-icon">🔓</span><span class="vuln-badge vc-high">High</span></div>
-      <div class="vuln-name">IDOR</div>
-      <div class="vuln-cwe">CWE-639 / OWASP A01</div>
-      <p class="vuln-desc">Insecure direct object reference flaws let users access or modify other users' data by changing IDs.</p>
-    </div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">💉</span><span class="vuln-badge vc-crit">Critical</span></div><div class="vuln-name">SQL Injection</div><div class="vuln-cwe">CWE-89 / OWASP A03</div><p class="vuln-desc">Database manipulation via unsanitized inputs. Can lead to full data exfiltration or remote code execution.</p></div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">🔀</span><span class="vuln-badge vc-high">High</span></div><div class="vuln-name">XSS</div><div class="vuln-cwe">CWE-79 / OWASP A03</div><p class="vuln-desc">Cross-site scripting enables session hijacking, phishing overlays, and client-side malware injection.</p></div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">🔗</span><span class="vuln-badge vc-crit">Critical</span></div><div class="vuln-name">SSRF</div><div class="vuln-cwe">CWE-918 / OWASP A10</div><p class="vuln-desc">Server-side request forgery forces servers to make internal requests, exposing cloud metadata.</p></div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">🔑</span><span class="vuln-badge vc-crit">Critical</span></div><div class="vuln-name">Broken Auth</div><div class="vuln-cwe">CWE-287 / OWASP A07</div><p class="vuln-desc">Weak authentication flows, predictable tokens, or improper session management allow account takeover.</p></div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">📁</span><span class="vuln-badge vc-high">High</span></div><div class="vuln-name">Path Traversal</div><div class="vuln-cwe">CWE-22 / OWASP A01</div><p class="vuln-desc">Directory traversal attacks allow reading arbitrary files outside the web root, leaking sensitive configs.</p></div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">🌐</span><span class="vuln-badge vc-med">Medium</span></div><div class="vuln-name">CSRF</div><div class="vuln-cwe">CWE-352 / OWASP A01</div><p class="vuln-desc">Cross-site request forgery tricks authenticated users into executing unwanted state-changing actions.</p></div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">⚙️</span><span class="vuln-badge vc-med">Medium</span></div><div class="vuln-name">Misconfiguration</div><div class="vuln-cwe">CWE-16 / OWASP A05</div><p class="vuln-desc">Security misconfigs including open S3 buckets, exposed admin panels, and verbose error messages.</p></div>
+    <div class="vuln-card"><div class="vuln-top"><span class="vuln-icon">🔓</span><span class="vuln-badge vc-high">High</span></div><div class="vuln-name">IDOR</div><div class="vuln-cwe">CWE-639 / OWASP A01</div><p class="vuln-desc">Insecure direct object reference flaws let users access or modify other users' data by changing IDs.</p></div>
   </div>
 </section>
 
@@ -477,42 +404,12 @@
     <div class="sline"></div>
   </div>
   <div class="bugs-grid">
-    <div class="bug-card">
-      <span class="bug-year">2021</span>
-      <div class="sev sev-c">Critical</div>
-      <div class="bug-target">Facebook / Meta</div>
-      <p class="bug-desc">Discovered a critical security vulnerability in Facebook's platform affecting millions of users. Responsibly reported and acknowledged in Meta's official security Hall of Fame.</p>
-    </div>
-    <div class="bug-card">
-      <span class="bug-year">2020</span>
-      <div class="sev sev-h">High</div>
-      <div class="bug-target">VK.com</div>
-      <p class="bug-desc">Identified a critical security vulnerability in VK's platform infrastructure. Responsibly disclosed and acknowledged by VK's security team in their official bug bounty program.</p>
-    </div>
-    <div class="bug-card">
-      <span class="bug-year">2022</span>
-      <div class="sev sev-c">Critical</div>
-      <div class="bug-target">Multiple Platforms</div>
-      <p class="bug-desc">Uncovered critical vulnerabilities leading to severe impact on several high-traffic web platforms. All findings responsibly disclosed to respective security teams.</p>
-    </div>
-    <div class="bug-card">
-      <span class="bug-year">2019–2024</span>
-      <div class="sev sev-m">Medium–High</div>
-      <div class="bug-target">Server Infrastructure</div>
-      <p class="bug-desc">Identified server misconfigurations, exposed admin panels, and privilege escalation paths across various companies through authorized penetration testing engagements.</p>
-    </div>
-    <div class="bug-card">
-      <span class="bug-year">2023</span>
-      <div class="sev sev-h">High</div>
-      <div class="bug-target">E-Commerce Platforms</div>
-      <p class="bug-desc">Found critical access control flaws in multiple e-commerce platforms, exposing customer data and order management systems to unauthorized access.</p>
-    </div>
-    <div class="bug-card">
-      <span class="bug-year">Ongoing</span>
-      <div class="sev sev-m">Various</div>
-      <div class="bug-target">50+ Platforms Total</div>
-      <p class="bug-desc">Active bug bounty hunter with 50+ accepted reports across major platforms. Specialized in web application security, API vulnerabilities, and business logic flaws.</p>
-    </div>
+    <div class="bug-card"><span class="bug-year">2021</span><div class="sev sev-c">Critical</div><div class="bug-target">Facebook / Meta</div><p class="bug-desc">Discovered a critical security vulnerability in Facebook's platform affecting millions of users. Responsibly reported and acknowledged in Meta's official security Hall of Fame.</p></div>
+    <div class="bug-card"><span class="bug-year">2020</span><div class="sev sev-h">High</div><div class="bug-target">VK.com</div><p class="bug-desc">Identified a critical security vulnerability in VK's platform infrastructure. Responsibly disclosed and acknowledged by VK's security team in their official bug bounty program.</p></div>
+    <div class="bug-card"><span class="bug-year">2022</span><div class="sev sev-c">Critical</div><div class="bug-target">Multiple Platforms</div><p class="bug-desc">Uncovered critical vulnerabilities on several high-traffic web platforms. All findings responsibly disclosed to respective security teams.</p></div>
+    <div class="bug-card"><span class="bug-year">2019–2024</span><div class="sev sev-m">Medium–High</div><div class="bug-target">Server Infrastructure</div><p class="bug-desc">Identified server misconfigurations, exposed admin panels, and privilege escalation paths across various companies through authorized penetration testing engagements.</p></div>
+    <div class="bug-card"><span class="bug-year">2023</span><div class="sev sev-h">High</div><div class="bug-target">E-Commerce Platforms</div><p class="bug-desc">Found critical access control flaws in multiple e-commerce platforms, exposing customer data and order management systems to unauthorized access.</p></div>
+    <div class="bug-card"><span class="bug-year">Ongoing</span><div class="sev sev-m">Various</div><div class="bug-target">50+ Platforms Total</div><p class="bug-desc">Active bug bounty hunter with 50+ accepted reports. Specialized in web application security, API vulnerabilities, and business logic flaws.</p></div>
   </div>
 </section>
 
@@ -674,12 +571,8 @@
       <div class="cf-g"><label>Subject</label><input type="text" name="subject" placeholder="Project / Security Audit / Consultation" required/></div>
       <div class="cf-g"><label>Message</label><textarea name="message" placeholder="Tell me about your project or security needs..." required></textarea></div>
       <button class="btn-send" type="submit" id="sendBtn">Send Message →</button>
-      <div id="formSuccess" style="display:none;margin-top:14px;font-family:var(--mono);font-size:.78rem;color:var(--green);letter-spacing:1px;">
-        ✓ Message sent! I'll get back to you within 24 hours.
-      </div>
-      <div id="formError" style="display:none;margin-top:14px;font-family:var(--mono);font-size:.78rem;color:#e53935;letter-spacing:1px;">
-        ✗ Something went wrong. Please try again.
-      </div>
+      <div id="formSuccess" style="display:none;margin-top:14px;font-family:var(--mono);font-size:.78rem;color:var(--green);letter-spacing:1px;">✓ Message sent! I'll get back to you within 24 hours.</div>
+      <div id="formError" style="display:none;margin-top:14px;font-family:var(--mono);font-size:.78rem;color:#e53935;letter-spacing:1px;">✗ Something went wrong. Please try again.</div>
     </form>
   </div>
 </section>
@@ -695,7 +588,6 @@
 </footer>
 
 <script>
-  // Hamburger
   const hamburger = document.getElementById("hamburger");
   const drawer    = document.getElementById("navDrawer");
   hamburger.addEventListener("click", () => {
@@ -708,8 +600,6 @@
     drawer.classList.remove("open");
     document.body.style.overflow = "";
   }
-
-  // Active dot on scroll
   const sections = ["about","research","bugs","skills","projects","contact"];
   const dots     = document.querySelectorAll(".nav-dots-inner .ndot");
   const dotLinks = document.querySelectorAll(".ndot-link");
@@ -722,8 +612,6 @@
     dots.forEach((d, i)     => d.classList.toggle("active", i === current));
     dotLinks.forEach((l, i) => l.classList.toggle("active-link", i === current));
   });
-
-  // Contact form — Formspree
   const form    = document.getElementById('contactForm');
   const sendBtn = document.getElementById('sendBtn');
   const formOk  = document.getElementById('formSuccess');
@@ -746,4 +634,15 @@
         sendBtn.textContent = '✓ Sent!';
       } else {
         formErr.style.display = 'block';
-        sendBtn.textContent = 'Se
+        sendBtn.textContent = 'Send Message →';
+        sendBtn.disabled = false;
+      }
+    } catch {
+      formErr.style.display = 'block';
+      sendBtn.textContent = 'Send Message →';
+      sendBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
