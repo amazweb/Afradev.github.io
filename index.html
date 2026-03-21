@@ -178,9 +178,14 @@
     .sk-pct { font-family:var(--mono); font-size:.76rem; color:var(--green); }
     .sk-bar { height:4px; background:var(--lgray); border-radius:2px; overflow:hidden; }
     .sk-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--gdark)); border-radius:2px; }
-    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
     .chip { font-family:var(--mono); font-size:.7rem; letter-spacing:1px; padding:5px 12px; border:1px solid var(--lgray); border-radius:2px; color:var(--gray); background:var(--white); transition:border-color .2s, color .2s; }
     .chip:hover { border-color:var(--green); color:var(--green); }
+    /* Tool icon chips */
+    .tool-chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
+    .tool-chip { display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:.68rem; letter-spacing:1px; padding:6px 14px; border:1px solid var(--lgray); border-radius:4px; color:var(--gray); background:var(--white); transition:border-color .25s, color .25s, background .25s; cursor:default; }
+    .tool-chip:hover { border-color:var(--green); color:var(--ink); background:rgba(0,200,83,.05); }
+    .tool-chip img { width:18px; height:18px; object-fit:contain; display:block; }
 
     /* ── PROJECTS ── */
     #projects { background:var(--white); }
@@ -221,6 +226,22 @@
     .cf-g textarea { min-height:110px; }
     .btn-send { padding:13px 28px; background:var(--green); color:#fff; font-family:var(--mono); font-size:.78rem; letter-spacing:2px; text-transform:uppercase; border:none; border-radius:3px; cursor:pointer; transition:background .2s; align-self:flex-start; }
     .btn-send:hover { background:var(--gdark); }
+
+    /* ── TOOLS ── */
+    #tools { background:var(--ink); }
+    .tools-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:16px; margin-top:8px; }
+    .tool-card {
+      background:#141414; border:1px solid #222; border-radius:8px;
+      padding:24px 16px; display:flex; flex-direction:column; align-items:center; gap:12px;
+      transition:border-color .3s, transform .3s, box-shadow .3s;
+      cursor:default;
+    }
+    .tool-card:hover { border-color:var(--green); transform:translateY(-4px); box-shadow:0 10px 28px rgba(0,200,83,.1); }
+    .tool-logo { width:48px; height:48px; display:flex; align-items:center; justify-content:center; }
+    .tool-logo img { width:48px; height:48px; object-fit:contain; filter:brightness(.9); transition:filter .3s; }
+    .tool-card:hover .tool-logo img { filter:brightness(1); }
+    .tool-name { font-family:var(--mono); font-size:.72rem; color:#aaa; letter-spacing:1.5px; text-transform:uppercase; text-align:center; transition:color .3s; }
+    .tool-card:hover .tool-name { color:var(--green); }
 
     /* ── FOOTER ── */
     footer { background:#060606; padding:26px 6%; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border-top:1px solid #181818; }
@@ -513,10 +534,22 @@
         <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>OWASP Top 10</span><span class="sk-pct">99%</span></div><div class="sk-bar"><div class="sk-fill" style="width:99%"></div></div></div>
       </div>
       <div class="sg-title mt">Security Tools</div>
-      <div class="chips">
-        <span class="chip">Burp Suite</span><span class="chip">Metasploit</span><span class="chip">Nmap</span>
-        <span class="chip">Wireshark</span><span class="chip">SQLMap</span><span class="chip">OWASP ZAP</span>
-        <span class="chip">Nikto</span><span class="chip">Nessus</span><span class="chip">Hydra</span><span class="chip">Shodan</span>
+      <div class="tool-chips">
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/burpsuite/FF6633" alt="Burp Suite"/>Burp Suite</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/metasploit/2596CD" alt="Metasploit"/>Metasploit</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/nmap/000000" alt="Nmap"/>Nmap</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/wireshark/1679A7" alt="Wireshark"/>Wireshark</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/owasp/000000" alt="OWASP ZAP"/>OWASP ZAP</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/kalilinux/557C94" alt="Nikto"/>Nikto</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/tenable/00BB8D" alt="Nessus"/>Nessus</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/shodan/FF0000" alt="Shodan"/>Shodan</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/mysql/4479A1" alt="SQLMap"/>SQLMap</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/gnubash/4EAA25" alt="Hydra"/>Hydra</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/aircrackng/000000" alt="Aircrack-ng"/>Aircrack-ng</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/hashicorp/000000" alt="John the Ripper"/>John the Ripper</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/volatility/5C4EE5" alt="Volatility"/>Volatility</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/elasticsearch/005571" alt="Maltego"/>Maltego</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/gobuster/00D4AA" alt="Gobuster"/>Gobuster</span>
       </div>
     </div>
     <div>
@@ -529,12 +562,23 @@
         <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>Linux / Nginx / Apache</span><span class="sk-pct">94%</span></div><div class="sk-bar"><div class="sk-fill" style="width:94%"></div></div></div>
       </div>
       <div class="sg-title mt">Dev Stack</div>
-      <div class="chips">
-        <span class="chip">WordPress</span><span class="chip">Joomla</span><span class="chip">Drupal</span>
-        <span class="chip">PrestaShop</span><span class="chip">Magento</span><span class="chip">React</span>
-        <span class="chip">Next.js</span><span class="chip">Node.js</span><span class="chip">PHP</span>
-        <span class="chip">Python</span><span class="chip">Docker</span><span class="chip">Git</span>
-        <span class="chip">Linux</span><span class="chip">MySQL</span><span class="chip">MongoDB</span><span class="chip">AWS</span>
+      <div class="tool-chips">
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/wordpress/21759B" alt="WordPress"/>WordPress</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/joomla/5091CD" alt="Joomla"/>Joomla</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/drupal/0678BE" alt="Drupal"/>Drupal</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/prestashop/DF0067" alt="PrestaShop"/>PrestaShop</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/magento/EE672F" alt="Magento"/>Magento</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/react/61DAFB" alt="React"/>React</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/nextdotjs/000000" alt="Next.js"/>Next.js</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/nodedotjs/5FA04E" alt="Node.js"/>Node.js</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/php/777BB4" alt="PHP"/>PHP</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/python/3776AB" alt="Python"/>Python</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/docker/2496ED" alt="Docker"/>Docker</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/git/F05032" alt="Git"/>Git</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/linux/FCC624" alt="Linux"/>Linux</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/mysql/4479A1" alt="MySQL"/>MySQL</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/mongodb/47A248" alt="MongoDB"/>MongoDB</span>
+        <span class="tool-chip"><img src="https://cdn.simpleicons.org/amazonaws/232F3E" alt="AWS"/>AWS</span>
       </div>
     </div>
   </div>
@@ -606,11 +650,11 @@
       <div class="c-rows">
         <div class="c-row">
           <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="c-info"><span>Email</span><strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9bf8f4f5effaf8efdbfafde9fafffeedb5f8f4f6">[email&#160;protected]</a></strong></div>
+          <div class="c-info"><span>Email</span><strong>contact@afraoua.it</strong></div>
         </div>
         <div class="c-row">
           <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
-          <div class="c-info"><span>Location</span><strong>Morocco 🇲🇦</strong></div>
+          <div class="c-info"><span>Location</span><strong>Italy 🇮🇹</strong></div>
         </div>
         <div class="c-row">
           <div class="c-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
@@ -650,7 +694,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // Hamburger
   const hamburger = document.getElementById("hamburger");
   const drawer    = document.getElementById("navDrawer");
