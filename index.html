@@ -1,666 +1,542 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Afra Dev — Web Developer & Security Researcher</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --green: #00c853;
-    --green-light: #69f0ae;
-    --green-dim: #1b5e20;
-    --green-glow: rgba(0, 200, 83, 0.15);
-    --black: #0a0a0a;
-    --dark: #111;
-    --white: #ffffff;
-    --off-white: #f5f5f5;
-    --gray: #e0e0e0;
-    --mid-gray: #9e9e9e;
-  }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Afra Dev | Web Developer & Security Researcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green:   #00C853;
+      --gdark:   #007E33;
+      --ink:     #111111;
+      --white:   #ffffff;
+      --off:     #f5f5f5;
+      --gray:    #555;
+      --lgray:   #e0e0e0;
+      --mono:    'Share Tech Mono', monospace;
+      --display: 'Syne', sans-serif;
+      --body:    'DM Sans', sans-serif;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:var(--body); background:var(--white); color:var(--ink); overflow-x:hidden; }
 
-  html { scroll-behavior: smooth; }
+    /* ── NAV ── */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 6%; background:rgba(255,255,255,.97); backdrop-filter:blur(16px); border-bottom:1px solid var(--lgray); }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; height:62px; }
+    .nav-logo { font-family:var(--display); font-size:1.3rem; font-weight:800; color:var(--ink); letter-spacing:1px; text-decoration:none; flex-shrink:0; }
+    .nav-logo span { color:var(--green); }
+    .nav-links { display:flex; gap:28px; list-style:none; }
+    .nav-links a { font-size:.78rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:var(--gray); transition:color .2s; position:relative; padding-bottom:3px; }
+    .nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1.5px; background:var(--green); transition:width .3s; }
+    .nav-links a:hover { color:var(--green); }
+    .nav-links a:hover::after { width:100%; }
+    .nav-right { display:flex; align-items:center; gap:16px; }
+    .nav-cta { font-family:var(--mono); font-size:.72rem; letter-spacing:1px; padding:7px 16px; border:1.5px solid var(--green); color:var(--green); text-decoration:none; border-radius:2px; transition:background .2s, color .2s; white-space:nowrap; }
+    .nav-cta:hover { background:var(--green); color:#fff; }
 
-  body {
-    background: #ffffff;
-    color: #111;
-    font-family: 'Rajdhani', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
+    /* Hamburger */
+    .hamburger { display:none; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:36px; height:36px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--ink); border-radius:2px; transition:transform .3s, opacity .3s, width .3s; transform-origin:center; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; width:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
 
-  /* Custom Cursor */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--green);
-    border-radius: 50%;
-    position: fixed;
-    top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s;
-    mix-blend-mode: multiply;
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--green);
-    border-radius: 50%;
-    position: fixed;
-    top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.15s ease, width 0.2s, height 0.2s;
-  }
-  .cursor-ring.expand { width: 56px; height: 56px; }
+    /* Mobile drawer */
+    .nav-drawer { display:none; position:fixed; top:62px; left:0; right:0; bottom:0; background:rgba(255,255,255,.98); backdrop-filter:blur(20px); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:20px; opacity:0; pointer-events:none; transition:opacity .3s ease; }
+    .nav-drawer.open { opacity:1; pointer-events:all; }
+    .nav-drawer a { font-family:var(--display); font-size:1.6rem; font-weight:800; text-decoration:none; color:var(--ink); letter-spacing:1px; padding:10px 20px; width:100%; text-align:center; border-radius:4px; transition:color .2s, background .2s; }
+    .nav-drawer a:hover { color:var(--green); background:rgba(0,200,83,.05); }
+    .nav-drawer .drawer-cta { margin-top:10px; font-family:var(--mono); font-size:.85rem; letter-spacing:2px; text-transform:uppercase; padding:12px 32px; background:var(--green); color:#fff; border-radius:2px; width:auto; }
+    .nav-drawer .drawer-cta:hover { background:var(--gdark); color:#fff; }
 
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; width: 100%; z-index: 1000;
-    background: rgba(255,255,255,0.95);
-    border-bottom: 1.5px solid var(--green);
-    backdrop-filter: blur(10px);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 60px;
-    height: 64px;
-  }
-  .nav-logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.1rem; font-weight: 900;
-    color: var(--black); letter-spacing: 2px;
-  }
-  .nav-logo span { color: var(--green); }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem; text-decoration: none;
-    color: #333; letter-spacing: 2px;
-    text-transform: uppercase;
-    position: relative; transition: color 0.2s;
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: -4px; left: 0;
-    width: 0; height: 1.5px; background: var(--green);
-    transition: width 0.3s;
-  }
-  .nav-links a:hover { color: var(--green); }
-  .nav-links a:hover::after { width: 100%; }
+    /* ── DOTS BAR ── */
+    .nav-dots { display:flex; align-items:center; justify-content:center; height:32px; background:var(--ink); position:fixed; top:62px; left:0; right:0; z-index:99; border-bottom:1px solid #1a1a1a; }
+    .nav-dots-inner { display:flex; align-items:center; white-space:nowrap; }
+    .ndot-link { display:inline-flex; align-items:center; gap:7px; text-decoration:none; cursor:pointer; padding:0 16px; height:32px; border-right:1px solid #1e1e1e; transition:background .2s; }
+    .ndot-link:first-child { border-left:1px solid #1e1e1e; }
+    .ndot-link:hover { background:rgba(0,200,83,.08); }
+    .ndot-link:hover .ndot, .ndot-link.active-link .ndot { opacity:1; box-shadow:0 0 8px var(--green); }
+    .ndot-link:hover .ndot-label, .ndot-link.active-link .ndot-label { color:var(--green); }
+    .ndot { width:6px; height:6px; border-radius:50%; background:var(--green); opacity:.3; flex-shrink:0; transition:opacity .3s, box-shadow .3s; }
+    .ndot.active { opacity:1; box-shadow:0 0 7px var(--green); }
+    .ndot-label { font-family:var(--mono); font-size:.58rem; color:#555; letter-spacing:2px; text-transform:uppercase; transition:color .2s; }
 
-  /* ─── HERO ─── */
-  #hero {
-    min-height: 100vh;
-    background: #fff;
-    display: flex; align-items: center;
-    padding: 0 60px;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 2px solid #111;
-  }
-  .hero-grid-bg {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,200,83,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,200,83,0.06) 1px, transparent 1px);
-    background-size: 50px 50px;
-    pointer-events: none;
-  }
-  .hero-content { position: relative; z-index: 2; max-width: 720px; }
-  .hero-tag {
-    display: inline-block;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem; letter-spacing: 3px;
-    color: var(--green); text-transform: uppercase;
-    border: 1px solid var(--green);
-    padding: 4px 14px; margin-bottom: 28px;
-    background: rgba(0,200,83,0.06);
-  }
-  .hero-name {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(2.8rem, 6vw, 5rem);
-    font-weight: 900; line-height: 1.05;
-    color: var(--black); letter-spacing: -1px;
-    margin-bottom: 8px;
-  }
-  .hero-name .accent { color: var(--green); }
-  .hero-role {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.1rem; color: #444;
-    margin-bottom: 28px; letter-spacing: 1px;
-  }
-  .hero-role .sep { color: var(--green); margin: 0 10px; }
-  .hero-desc {
-    font-size: 1.1rem; color: #555; line-height: 1.7;
-    max-width: 560px; margin-bottom: 42px;
-    font-weight: 400;
-  }
-  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
-  .btn-primary {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem; letter-spacing: 2px;
-    text-transform: uppercase;
-    background: var(--black); color: var(--green);
-    border: none; padding: 14px 32px;
-    text-decoration: none; display: inline-block;
-    transition: background 0.2s, transform 0.2s;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-  }
-  .btn-primary:hover { background: var(--green); color: var(--black); transform: translateY(-2px); }
-  .btn-outline {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem; letter-spacing: 2px;
-    text-transform: uppercase;
-    background: transparent; color: var(--black);
-    border: 1.5px solid var(--black);
-    padding: 13px 32px; text-decoration: none;
-    display: inline-block; transition: all 0.2s;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-  }
-  .btn-outline:hover { background: var(--black); color: var(--green); }
+    /* ── HERO ── */
+    #hero { min-height:100vh; display:flex; align-items:center; padding:150px 6% 80px; position:relative; overflow:hidden; background:var(--white); }
+    .hero-dots { position:absolute; inset:0; pointer-events:none; background-image:radial-gradient(circle, var(--lgray) 1.2px, transparent 1.2px); background-size:28px 28px; opacity:.7; }
+    .hero-dots::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 65% 50%, rgba(255,255,255,0) 0%, rgba(255,255,255,.85) 65%); }
+    .hero-inner { position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%; }
+    .hero-label { font-family:var(--mono); font-size:.72rem; color:var(--green); letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
+    .hero-title { font-family:var(--display); font-size:clamp(2.6rem,5vw,5rem); font-weight:800; line-height:1.02; color:var(--ink); }
+    .hero-title .accent { color:var(--green); }
+    .hero-title .outline { -webkit-text-stroke:2px var(--ink); -webkit-text-fill-color:transparent; }
+    .hero-desc { margin-top:22px; font-size:.97rem; line-height:1.85; color:var(--gray); max-width:480px; }
+    .hero-desc strong { color:var(--ink); }
+    .hero-tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:24px; }
+    .tag { font-family:var(--mono); font-size:.68rem; letter-spacing:1.5px; padding:5px 12px; border:1px solid var(--lgray); border-radius:2px; color:var(--gray); background:var(--off); cursor:default; }
+    .tag.on { border-color:var(--green); color:var(--green); background:rgba(0,200,83,.06); }
+    .hero-cta { display:flex; gap:12px; margin-top:30px; flex-wrap:wrap; }
+    .btn-dark { padding:12px 30px; background:var(--ink); color:#fff; font-family:var(--mono); font-size:.76rem; letter-spacing:2px; text-transform:uppercase; text-decoration:none; border-radius:2px; border:2px solid var(--ink); transition:background .2s, border-color .2s; }
+    .btn-dark:hover { background:var(--green); border-color:var(--green); }
+    .btn-border { padding:12px 30px; background:transparent; color:var(--ink); font-family:var(--mono); font-size:.76rem; letter-spacing:2px; text-transform:uppercase; text-decoration:none; border-radius:2px; border:2px solid var(--ink); transition:border-color .2s, color .2s; }
+    .btn-border:hover { border-color:var(--green); color:var(--green); }
 
-  /* Hero right decorative terminal */
-  .hero-terminal {
-    position: absolute; right: 60px; top: 50%;
-    transform: translateY(-50%);
-    width: 380px; background: #0a0a0a;
-    border: 1.5px solid var(--green);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    box-shadow: 0 0 40px rgba(0,200,83,0.1);
-    animation: floatUpDown 6s ease-in-out infinite;
-  }
-  @keyframes floatUpDown {
-    0%,100% { transform: translateY(-50%) translateY(0); }
-    50% { transform: translateY(-50%) translateY(-12px); }
-  }
-  .terminal-bar {
-    background: #1a1a1a; padding: 10px 16px;
-    display: flex; align-items: center; gap: 8px;
-    border-bottom: 1px solid #222;
-  }
-  .t-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .t-dot.r { background: #ff5f57; }
-  .t-dot.y { background: #febc2e; }
-  .t-dot.g { background: #28c840; }
-  .terminal-title { font-size: 0.7rem; color: #666; margin-left: auto; letter-spacing: 1px; }
-  .terminal-body { padding: 20px; color: #00c853; line-height: 2; }
-  .t-prompt { color: #69f0ae; }
-  .t-cmd { color: #fff; }
-  .t-out { color: #888; }
-  .t-green { color: #00c853; }
-  .t-blink { animation: blink 1s infinite; }
-  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
-  .typing-line { overflow: hidden; white-space: nowrap; border-right: 2px solid var(--green); animation: typing 3s steps(40,end) 1s both, blink-caret 0.75s step-end infinite; width: 0; }
-  @keyframes typing { from{width:0} to{width:100%} }
-  @keyframes blink-caret { 0%,100%{border-color:var(--green)}50%{border-color:transparent} }
+    /* Terminal */
+    .terminal { background:var(--ink); border-radius:8px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.12); }
+    .term-bar { background:#1c1c1c; padding:10px 16px; display:flex; align-items:center; gap:7px; }
+    .td { width:11px; height:11px; border-radius:50%; }
+    .td.r{background:#ff5f57} .td.y{background:#febc2e} .td.g{background:#28c840}
+    .term-title { font-size:.7rem; color:#555; margin:0 auto; letter-spacing:1px; font-family:var(--mono); }
+    .term-body { padding:22px; font-family:var(--mono); font-size:.8rem; line-height:2.1; color:#ccc; }
+    .tl { display:block; }
+    .tg { color:var(--green); } .tgr { color:#555; } .tw { color:#eee; } .tgold { color:#FFD600; }
+    .blink { display:inline-block; width:8px; height:14px; background:var(--green); animation:bl .8s step-end infinite; vertical-align:middle; margin-left:2px; }
+    @keyframes bl { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  /* ─── SECTION SHARED ─── */
-  section { padding: 100px 60px; }
-  .section-header { margin-bottom: 70px; }
-  .section-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem; letter-spacing: 4px;
-    color: var(--green); text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .section-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-    font-weight: 900; color: var(--black);
-    line-height: 1.1;
-  }
-  .section-title .accent { color: var(--green); }
-  .section-line {
-    width: 60px; height: 3px;
-    background: var(--green); margin-top: 18px;
-  }
+    /* ── TICKER ── */
+    .ticker-strip { background:var(--ink); overflow:hidden; padding:10px 0; border-top:1px solid #1a1a1a; border-bottom:1px solid #1a1a1a; }
+    .ticker-track { display:flex; gap:44px; animation:tickRun 12s linear infinite; white-space:nowrap; }
+    @keyframes tickRun { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .ti { display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:.76rem; color:#999; letter-spacing:1px; }
+    .ti svg { width:13px; height:13px; stroke:var(--green); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .tsep { color:#333; }
 
-  /* ─── ABOUT ─── */
-  #about { background: #fafafa; border-bottom: 1.5px solid #e0e0e0; }
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .about-img-wrap {
-    position: relative;
-  }
-  .about-img-frame {
-    width: 100%; aspect-ratio: 4/5;
-    background: #111;
-    position: relative; overflow: hidden;
-    border: 2px solid var(--black);
-  }
-  .about-img-frame img {
-    width: 100%; height: 100%; object-fit: cover;
-    filter: grayscale(20%);
-    transition: filter 0.4s;
-  }
-  .about-img-frame:hover img { filter: grayscale(0%); }
-  .about-img-accent {
-    position: absolute; bottom: -14px; right: -14px;
-    width: 80%; height: 80%;
-    border: 2px solid var(--green);
-    z-index: -1;
-  }
-  .about-badge {
-    position: absolute; top: 20px; left: -20px;
-    background: var(--green); color: var(--black);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem; padding: 8px 14px;
-    letter-spacing: 2px; text-transform: uppercase;
-    font-weight: 700;
-  }
-  .about-text p {
-    font-size: 1.05rem; color: #444; line-height: 1.8;
-    margin-bottom: 20px; font-weight: 400;
-  }
-  .about-stats { display: flex; gap: 40px; margin-top: 36px; }
-  .stat-item { text-align: center; }
-  .stat-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 2.2rem; font-weight: 900;
-    color: var(--black); line-height: 1;
-  }
-  .stat-num span { color: var(--green); }
-  .stat-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem; color: #888;
-    letter-spacing: 2px; text-transform: uppercase; margin-top: 6px;
-  }
-  .skills-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-  .skill-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem; letter-spacing: 1.5px;
-    background: transparent;
-    border: 1px solid #ccc;
-    color: #333; padding: 6px 14px;
-    text-transform: uppercase;
-    transition: all 0.2s;
-  }
-  .skill-tag:hover { border-color: var(--green); color: var(--green); background: var(--green-glow); }
+    /* ── SECTION COMMONS ── */
+    section { padding:96px 6%; }
+    .sh { margin-bottom:56px; }
+    .slabel { font-family:var(--mono); font-size:.68rem; letter-spacing:5px; text-transform:uppercase; color:var(--green); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+    .slabel::before { content:''; display:inline-block; width:24px; height:1.5px; background:var(--green); }
+    .stitle { font-family:var(--display); font-size:clamp(2rem,4vw,3.4rem); font-weight:800; color:var(--ink); line-height:1.06; letter-spacing:-.5px; }
+    .stitle span { color:var(--green); }
+    .sline { width:48px; height:3px; background:linear-gradient(90deg,var(--green),transparent); border-radius:2px; margin-top:16px; }
 
-  /* ─── PROJECTS ─── */
-  #projects { background: #fff; border-bottom: 1.5px solid #e0e0e0; }
-  .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-  .project-card {
-    position: relative; overflow: hidden;
-    background: #fff;
-    border: 1.5px solid #e0e0e0;
-    transition: border-color 0.3s, transform 0.3s;
-    cursor: none;
-  }
-  .project-card:hover { border-color: var(--green); transform: translateY(-4px); z-index: 2; }
-  .project-img {
-    width: 100%; aspect-ratio: 16/10;
-    object-fit: cover; display: block;
-    filter: grayscale(30%); transition: filter 0.4s, transform 0.4s;
-  }
-  .project-card:hover .project-img { filter: grayscale(0%); transform: scale(1.03); }
-  .project-body { padding: 24px; }
-  .project-type {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 3px;
-    color: var(--green); text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .project-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 1rem; font-weight: 700;
-    color: var(--black); margin-bottom: 10px; line-height: 1.3;
-  }
-  .project-desc { font-size: 0.9rem; color: #666; line-height: 1.6; margin-bottom: 18px; }
-  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .ptag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem; letter-spacing: 1px;
-    background: #f0f0f0; color: #555;
-    padding: 3px 10px; text-transform: uppercase;
-  }
-  .project-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 16px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem; letter-spacing: 2px;
-    color: var(--green); text-decoration: none;
-    text-transform: uppercase; transition: gap 0.2s;
-  }
-  .project-link:hover { gap: 14px; }
+    /* Dark section overrides */
+    .dark-section { background:var(--ink); color:var(--white); }
+    .dark-section .slabel::before { background:var(--green); }
+    .dark-section .stitle { color:var(--white); }
 
-  /* ─── VULNERABILITIES ─── */
-  #vulnerabilities { background: #0a0a0a; color: #fff; border-bottom: 2px solid var(--green); }
-  #vulnerabilities .section-title { color: #fff; }
-  #vulnerabilities .section-label { color: var(--green-light); }
-  .vuln-intro { font-size: 1.05rem; color: #aaa; max-width: 650px; margin-bottom: 60px; line-height: 1.7; }
-  .vuln-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #1a1a1a; }
-  .vuln-card {
-    background: #111;
-    padding: 32px 28px;
-    border-top: 3px solid transparent;
-    transition: border-color 0.3s, background 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .vuln-card::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at top left, rgba(0,200,83,0.05), transparent 60%);
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .vuln-card:hover { border-top-color: var(--green); background: #141414; }
-  .vuln-card:hover::before { opacity: 1; }
-  .vuln-icon {
-    font-size: 2rem; margin-bottom: 16px;
-    display: block;
-  }
-  .vuln-name {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem; font-weight: 700;
-    color: var(--green); letter-spacing: 1px;
-    text-transform: uppercase; margin-bottom: 10px;
-  }
-  .vuln-code {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; color: #444;
-    letter-spacing: 1px; margin-bottom: 14px;
-  }
-  .vuln-desc { font-size: 0.85rem; color: #888; line-height: 1.6; }
-  .severity {
-    display: inline-block; margin-top: 14px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem; letter-spacing: 2px;
-    padding: 3px 10px; text-transform: uppercase;
-  }
-  .sev-critical { background: rgba(255,0,0,0.15); color: #ff5252; border: 1px solid #ff5252; }
-  .sev-high { background: rgba(255,100,0,0.12); color: #ff7043; border: 1px solid #ff7043; }
-  .sev-medium { background: rgba(255,200,0,0.12); color: #ffd740; border: 1px solid #ffd740; }
-  .sev-low { background: rgba(0,200,83,0.1); color: var(--green); border: 1px solid var(--green); }
+    /* ── ABOUT ── */
+    #about { background:var(--off); }
+    .about-grid { display:grid; grid-template-columns:320px 1fr; gap:64px; align-items:start; }
+    .photo-wrap { position:relative; }
+    .photo-box { width:100%; aspect-ratio:3/4; border-radius:6px; overflow:hidden; border:2px solid var(--lgray); }
+    .photo-box img { width:100%; height:100%; object-fit:cover; display:block; }
+    .photo-badge { position:absolute; bottom:-12px; right:-12px; background:var(--green); color:#fff; font-family:var(--mono); font-size:.66rem; letter-spacing:1.5px; padding:9px 16px; border-radius:2px; box-shadow:0 4px 18px rgba(0,200,83,.3); }
+    .about-text h3 { font-family:var(--display); font-size:1.5rem; font-weight:700; color:var(--ink); margin-bottom:16px; }
+    .about-text p { color:var(--gray); line-height:1.9; font-size:.95rem; margin-bottom:14px; }
+    .about-text strong { color:var(--ink); }
+    .about-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:26px; }
+    .ac { display:flex; align-items:flex-start; gap:10px; background:var(--white); border:1px solid var(--lgray); border-radius:4px; padding:14px; transition:border-color .2s; }
+    .ac:hover { border-color:var(--green); }
+    .ac svg { width:17px; height:17px; stroke:var(--green); fill:none; stroke-width:2; flex-shrink:0; margin-top:2px; }
+    .ac strong { display:block; font-size:.86rem; color:var(--ink); margin-bottom:2px; }
+    .ac span { font-size:.76rem; color:var(--gray); }
 
-  /* CVE showcase */
-  .cve-showcase { margin-top: 60px; }
-  .cve-title {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem; letter-spacing: 3px;
-    color: #666; text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-  .cve-list { display: flex; flex-direction: column; gap: 1px; }
-  .cve-row {
-    display: grid; grid-template-columns: 160px 1fr auto auto;
-    gap: 20px; align-items: center;
-    background: #111; padding: 16px 24px;
-    border-left: 3px solid transparent;
-    transition: border-color 0.2s, background 0.2s;
-    font-family: 'Share Tech Mono', monospace;
-  }
-  .cve-row:hover { border-left-color: var(--green); background: #141414; }
-  .cve-id { color: var(--green); font-size: 0.78rem; letter-spacing: 1px; }
-  .cve-name { color: #ccc; font-size: 0.78rem; }
-  .cve-type { color: #666; font-size: 0.72rem; letter-spacing: 1px; }
-  .cve-score {
-    font-size: 0.78rem; font-weight: 700;
-    padding: 2px 10px;
-  }
-  .score-9 { color: #ff5252; }
-  .score-7 { color: #ff7043; }
-  .score-5 { color: #ffd740; }
+    /* ── SECURITY RESEARCH ── */
+    .research-intro { font-size:.95rem; color:#888; line-height:1.8; max-width:640px; margin-bottom:52px; }
+    .vuln-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+    .vuln-card { background:#111; border:1px solid #222; border-radius:6px; padding:24px; position:relative; overflow:hidden; transition:border-color .3s, transform .3s, box-shadow .3s; }
+    .vuln-card:hover { border-color:var(--green); transform:translateY(-3px); box-shadow:0 10px 32px rgba(0,200,83,.08); }
+    .vuln-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--green); opacity:.5; transition:opacity .3s; }
+    .vuln-card:hover::before { opacity:1; }
+    .vuln-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; gap:10px; }
+    .vuln-icon { font-size:1.6rem; line-height:1; flex-shrink:0; }
+    .vuln-badge { font-family:var(--mono); font-size:.6rem; letter-spacing:1.5px; padding:3px 9px; border-radius:2px; text-transform:uppercase; flex-shrink:0; }
+    .vc-crit { background:rgba(229,57,53,.12); color:#e53935; border:1px solid rgba(229,57,53,.25); }
+    .vc-high { background:rgba(244,81,30,.12); color:#f4511e; border:1px solid rgba(244,81,30,.25); }
+    .vc-med  { background:rgba(249,168,37,.12); color:#f9a825; border:1px solid rgba(249,168,37,.25); }
+    .vuln-name { font-family:var(--display); font-size:1.05rem; font-weight:700; color:var(--white); margin-bottom:4px; }
+    .vuln-cwe  { font-family:var(--mono); font-size:.65rem; color:var(--green); letter-spacing:1px; margin-bottom:10px; }
+    .vuln-desc { font-size:.82rem; color:#777; line-height:1.7; }
 
-  /* ─── TOOLS ─── */
-  #tools { background: #fafafa; border-bottom: 1.5px solid #e0e0e0; }
-  .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .tool-card {
-    background: #fff;
-    border: 1.5px solid #e0e0e0;
-    padding: 32px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    position: relative;
-  }
-  .tool-card:hover {
-    border-color: var(--green);
-    box-shadow: 0 8px 32px rgba(0,200,83,0.08);
-  }
-  .tool-card-number {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.65rem; color: #ddd;
-    position: absolute; top: 16px; right: 20px;
-    letter-spacing: 2px;
-  }
-  .tool-icon-wrap {
-    width: 52px; height: 52px;
-    background: #f5f5f5;
-    border: 1.5px solid #e0e0e0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem; margin-bottom: 20px;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .tool-card:hover .tool-icon-wrap {
-    background: var(--green-glow);
-    border-color: var(--green);
-  }
-  .tool-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.95rem; font-weight: 700;
-    color: var(--black); margin-bottom: 10px;
-  }
-  .tool-desc { font-size: 0.9rem; color: #666; line-height: 1.6; }
-  .tool-tech {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 2px;
-    color: var(--green); text-transform: uppercase;
-    margin-top: 14px;
-  }
+    /* ── HALL OF FAME ── */
+    #bugs { background:var(--white); }
+    .bugs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:22px; }
+    .bug-card { border:1px solid var(--lgray); border-radius:6px; padding:26px; position:relative; overflow:hidden; background:var(--white); transition:border-color .3s, transform .3s, box-shadow .3s; }
+    .bug-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--green); }
+    .bug-card:hover { border-color:var(--green); transform:translateY(-4px); box-shadow:0 12px 36px rgba(0,200,83,.08); }
+    .bug-year { position:absolute; top:22px; right:22px; font-family:var(--mono); font-size:.7rem; color:var(--lgray); }
+    .sev { display:inline-block; font-family:var(--mono); font-size:.63rem; letter-spacing:2px; padding:3px 10px; border-radius:2px; margin-bottom:12px; text-transform:uppercase; }
+    .sev-c { background:rgba(229,57,53,.08); color:#e53935; border:1px solid rgba(229,57,53,.25); }
+    .sev-h { background:rgba(244,81,30,.08); color:#f4511e; border:1px solid rgba(244,81,30,.25); }
+    .sev-m { background:rgba(249,168,37,.08); color:#f9a825; border:1px solid rgba(249,168,37,.25); }
+    .bug-target { font-family:var(--display); font-size:1.15rem; font-weight:700; color:var(--ink); margin-bottom:10px; }
+    .bug-desc { font-size:.83rem; color:var(--gray); line-height:1.7; }
 
-  /* ─── CONTACT ─── */
-  #contact { background: #fff; }
-  .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-  .contact-info h3 {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.5rem; font-weight: 700;
-    color: var(--black); margin-bottom: 20px;
-  }
-  .contact-info p { font-size: 1rem; color: #666; line-height: 1.7; margin-bottom: 36px; }
-  .contact-items { display: flex; flex-direction: column; gap: 20px; }
-  .contact-item {
-    display: flex; align-items: center; gap: 16px;
-  }
-  .contact-icon {
-    width: 44px; height: 44px;
-    border: 1.5px solid #e0e0e0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; flex-shrink: 0;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .contact-item:hover .contact-icon {
-    border-color: var(--green);
-    background: var(--green-glow);
-  }
-  .contact-item-text { font-size: 0.9rem; }
-  .contact-item-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 2px;
-    color: #aaa; text-transform: uppercase; margin-bottom: 2px;
-  }
-  .contact-item-val { color: var(--black); font-weight: 500; }
-  .contact-form { display: flex; flex-direction: column; gap: 16px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 2px;
-    color: #888; text-transform: uppercase;
-  }
-  .form-input, .form-textarea {
-    background: #fafafa;
-    border: 1.5px solid #e0e0e0;
-    padding: 12px 16px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.95rem; color: var(--black);
-    outline: none; transition: border-color 0.2s;
-    resize: none;
-  }
-  .form-input:focus, .form-textarea:focus { border-color: var(--green); background: #fff; }
-  .form-textarea { min-height: 120px; }
-  .form-submit {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem; letter-spacing: 3px;
-    text-transform: uppercase;
-    background: var(--black); color: var(--green);
-    border: none; padding: 16px 36px;
-    cursor: none; transition: background 0.2s;
-    align-self: flex-start;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-  }
-  .form-submit:hover { background: var(--green); color: var(--black); }
+    /* ── SKILLS ── */
+    #skills { background:var(--off); }
+    .skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+    .sg-title { font-family:var(--display); font-weight:700; font-size:1.05rem; color:var(--ink); margin-bottom:22px; padding-bottom:10px; border-bottom:2px solid var(--green); }
+    .sg-title.mt { margin-top:32px; }
+    .sk-list { display:flex; flex-direction:column; gap:14px; }
+    .sk-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+    .sk-name { font-size:.87rem; font-weight:600; color:var(--ink); display:flex; align-items:center; gap:7px; }
+    .sk-name svg { width:14px; height:14px; stroke:var(--green); fill:none; stroke-width:2; }
+    .sk-pct { font-family:var(--mono); font-size:.76rem; color:var(--green); }
+    .sk-bar { height:4px; background:var(--lgray); border-radius:2px; overflow:hidden; }
+    .sk-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--gdark)); border-radius:2px; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .chip { font-family:var(--mono); font-size:.7rem; letter-spacing:1px; padding:5px 12px; border:1px solid var(--lgray); border-radius:2px; color:var(--gray); background:var(--white); transition:border-color .2s, color .2s; }
+    .chip:hover { border-color:var(--green); color:var(--green); }
 
-  /* ─── FOOTER ─── */
-  footer {
-    background: #0a0a0a; color: #555;
-    text-align: center; padding: 32px 60px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem; letter-spacing: 2px;
-    border-top: 2px solid var(--green);
-  }
-  footer span { color: var(--green); }
+    /* ── PROJECTS ── */
+    #projects { background:var(--white); }
+    .proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:26px; }
+    .proj-card { border:1px solid var(--lgray); border-radius:6px; overflow:hidden; transition:transform .3s, box-shadow .3s, border-color .3s; }
+    .proj-card:hover { transform:translateY(-5px); box-shadow:0 14px 44px rgba(0,0,0,.07); border-color:var(--green); }
+    .proj-top { height:200px; background:var(--ink); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+    .proj-top img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; filter:brightness(.75) saturate(.9); }
+    .proj-card:hover .proj-top img { transform:scale(1.06); filter:brightness(.6) saturate(1); }
+    .proj-top-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(0,0,0,.55) 100%); z-index:1; }
+    .proj-top-pat { position:absolute; inset:0; background-image:linear-gradient(rgba(0,200,83,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,83,.07) 1px,transparent 1px); background-size:22px 22px; z-index:2; }
+    .proj-top svg { position:relative; z-index:3; width:46px; height:46px; stroke:var(--green); fill:none; stroke-width:1.5; filter:drop-shadow(0 2px 12px rgba(0,0,0,.6)); }
+    .proj-body { padding:22px; }
+    .proj-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+    .pt { font-family:var(--mono); font-size:.63rem; letter-spacing:1px; color:var(--green); background:rgba(0,200,83,.07); border:1px solid rgba(0,200,83,.2); padding:3px 9px; border-radius:2px; }
+    .proj-title { font-family:var(--display); font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:7px; }
+    .proj-desc { font-size:.83rem; color:var(--gray); line-height:1.7; margin-bottom:14px; }
+    .proj-link { font-family:var(--mono); font-size:.73rem; color:var(--green); text-decoration:none; letter-spacing:1px; display:inline-flex; align-items:center; gap:5px; transition:gap .2s; }
+    .proj-link:hover { gap:10px; }
+    .proj-link svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; }
 
-  /* ─── ANIMATIONS ─── */
-  .fade-up {
-    opacity: 0; transform: translateY(40px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ── CONTACT ── */
+    #contact { background:var(--ink); color:var(--white); }
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+    .c-desc { font-size:.95rem; color:#aaa; line-height:1.9; margin-bottom:28px; }
+    .c-rows { display:flex; flex-direction:column; gap:14px; }
+    .c-row { display:flex; align-items:center; gap:14px; }
+    .c-icon { width:40px; height:40px; border:1px solid #2a2a2a; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .c-icon svg { width:17px; height:17px; stroke:var(--green); fill:none; stroke-width:2; }
+    .c-info span { display:block; font-family:var(--mono); font-size:.68rem; color:#555; letter-spacing:1px; }
+    .c-info strong { font-size:.88rem; color:var(--white); }
+    .c-form { display:flex; flex-direction:column; gap:14px; }
+    .cf-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .cf-g { display:flex; flex-direction:column; gap:5px; }
+    .cf-g label { font-family:var(--mono); font-size:.67rem; letter-spacing:2px; color:#555; text-transform:uppercase; }
+    .cf-g input, .cf-g textarea { background:#111; border:1px solid #2a2a2a; border-radius:3px; padding:11px 14px; color:var(--white); font-family:var(--body); font-size:.88rem; outline:none; transition:border-color .2s; resize:vertical; }
+    .cf-g input:focus, .cf-g textarea:focus { border-color:var(--green); }
+    .cf-g textarea { min-height:110px; }
+    .btn-send { padding:13px 28px; background:var(--green); color:#fff; font-family:var(--mono); font-size:.78rem; letter-spacing:2px; text-transform:uppercase; border:none; border-radius:3px; cursor:pointer; transition:background .2s; align-self:flex-start; }
+    .btn-send:hover { background:var(--gdark); }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: #fff; }
-  ::-webkit-scrollbar-thumb { background: var(--green); }
+    /* ── FOOTER ── */
+    footer { background:#060606; padding:26px 6%; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border-top:1px solid #181818; }
+    .f-logo { font-family:var(--display); font-size:1.2rem; font-weight:800; color:var(--white); letter-spacing:1px; }
+    .f-logo span { color:var(--green); }
+    .f-copy { font-family:var(--mono); font-size:.72rem; color:#3a3a3a; }
+    .f-soc { display:flex; gap:14px; }
+    .f-soc a { color:#3a3a3a; transition:color .2s; }
+    .f-soc a:hover { color:var(--green); }
+    .f-soc svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; }
 
-  /* Mobile */
-  @media (max-width: 1024px) {
-    .hero-terminal { display: none; }
-    .projects-grid { grid-template-columns: 1fr 1fr; }
-    .vuln-grid { grid-template-columns: 1fr 1fr; }
-    .cve-row { grid-template-columns: 120px 1fr auto; }
-    .cve-type { display: none; }
-  }
-  @media (max-width: 768px) {
-    nav { padding: 0 24px; }
-    section { padding: 70px 24px; }
-    #hero { padding: 100px 24px 70px; }
-    .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
-    .projects-grid, .tools-grid { grid-template-columns: 1fr; }
-    .vuln-grid { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    .about-stats { gap: 24px; }
-    .nav-links { display: none; }
-  }
-</style>
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .hero-inner, .about-grid, .skills-grid, .contact-grid { grid-template-columns:1fr; }
+      .terminal { display:none; }
+      .nav-links, .nav-cta { display:none; }
+      .hamburger { display:flex; }
+      .nav-drawer { display:flex; }
+      .cf-row { grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Afra<span>_</span>Dev</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#vulnerabilities">Security</a></li>
-    <li><a href="#tools">Tools</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Afra<span> Dev</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#bugs">Hall of Fame</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#contact" class="nav-cta">Hire Me</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
 </nav>
+
+<!-- DOTS BAR -->
+<div class="nav-dots">
+  <div class="nav-dots-inner">
+    <a href="#about"    class="ndot-link active-link"><span class="ndot active"></span><span class="ndot-label">About</span></a>
+    <a href="#research" class="ndot-link"><span class="ndot"></span><span class="ndot-label">Research</span></a>
+    <a href="#bugs"     class="ndot-link"><span class="ndot"></span><span class="ndot-label">Hall of Fame</span></a>
+    <a href="#skills"   class="ndot-link"><span class="ndot"></span><span class="ndot-label">Skills</span></a>
+    <a href="#projects" class="ndot-link"><span class="ndot"></span><span class="ndot-label">Projects</span></a>
+    <a href="#contact"  class="ndot-link"><span class="ndot"></span><span class="ndot-label">Contact</span></a>
+  </div>
+</div>
+
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#about"    onclick="closeDrawer()">About</a>
+  <a href="#research" onclick="closeDrawer()">Research</a>
+  <a href="#bugs"     onclick="closeDrawer()">Hall of Fame</a>
+  <a href="#skills"   onclick="closeDrawer()">Skills</a>
+  <a href="#projects" onclick="closeDrawer()">Projects</a>
+  <a href="#contact"  onclick="closeDrawer()">Contact</a>
+  <a href="#contact"  onclick="closeDrawer()" class="drawer-cta">Hire Me</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-content">
-    <div class="hero-tag">// Available for work</div>
-    <h1 class="hero-name">Afra<br><span class="accent">Dev</span></h1>
-    <p class="hero-role">Web Developer <span class="sep">//</span> Vulnerability Researcher</p>
-    <p class="hero-desc">
-      I build high-performance web applications and hunt security vulnerabilities across modern systems. Full-stack development meets ethical hacking — precision on both fronts.
-    </p>
-    <div class="hero-btns">
-      <a href="#projects" class="btn-primary">View Projects</a>
-      <a href="#contact" class="btn-outline">Hire Me</a>
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <div>
+      <p class="hero-label">// portfolio.init() — 15 years experience</p>
+      <h1 class="hero-title">
+        Web Developer<br>
+        &amp; <span class="accent">Security</span><br>
+        <span class="outline">Researcher</span>
+      </h1>
+      <p class="hero-desc">
+        I build <strong>high-performance web applications</strong> and custom websites using <strong>WordPress, Joomla, Drupal</strong> and more. Also a bug bounty hunter with confirmed findings on <strong>Facebook, VK</strong>, and dozens of other platforms.
+      </p>
+      <div class="hero-tags">
+        <span class="tag on">Bug Bounty</span>
+        <span class="tag on">Penetration Testing</span>
+        <span class="tag on">Full-Stack Dev</span>
+        <span class="tag">Server Security</span>
+        <span class="tag">CMS Expert</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#bugs" class="btn-dark">View Hall of Fame</a>
+        <a href="#contact" class="btn-border">Let's Talk</a>
+      </div>
     </div>
-  </div>
-
-  <!-- Terminal decoration -->
-  <div class="hero-terminal">
-    <div class="terminal-bar">
-      <div class="t-dot r"></div>
-      <div class="t-dot y"></div>
-      <div class="t-dot g"></div>
-      <span class="terminal-title">Afra@kali:~$</span>
-    </div>
-    <div class="terminal-body">
-      <div><span class="t-prompt">Afra@kali</span>:<span class="t-green">~</span>$ whoami</div>
-      <div class="t-out">Full-Stack Dev + Security Researcher</div>
-      <br>
-      <div><span class="t-prompt">Afra@kali</span>:<span class="t-green">~</span>$ skills --list</div>
-      <div class="t-out">→ React / Next.js / Node.js</div>
-      <div class="t-out">→ Penetration Testing</div>
-      <div class="t-out">→ Bug Bounty Hunting</div>
-      <div class="t-out">→ Web App Security</div>
-      <br>
-      <div><span class="t-prompt">Afra@kali</span>:<span class="t-green">~</span>$ status</div>
-      <div class="t-green">● AVAILABLE FOR PROJECTS<span class="t-blink">_</span></div>
+    <div class="terminal">
+      <div class="term-bar">
+        <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+        <span class="term-title">security_profile.sh</span>
+      </div>
+      <div class="term-body">
+        <span class="tl"><span class="tgr">$</span> <span class="tg">whoami</span></span>
+        <span class="tl tw">&nbsp;&nbsp;Web Developer &amp; Security Researcher</span>
+        <span class="tl">&nbsp;</span>
+        <span class="tl"><span class="tgr">$</span> <span class="tg">cat</span> experience.txt</span>
+        <span class="tl tw">&nbsp;&nbsp;15 years web development</span>
+        <span class="tl tw">&nbsp;&nbsp;10+ years vulnerability research</span>
+        <span class="tl">&nbsp;</span>
+        <span class="tl"><span class="tgr">$</span> <span class="tg">ls</span> ./hall_of_fame/</span>
+        <span class="tl"><span class="tgold">&nbsp;&nbsp;facebook.com</span>&nbsp;&nbsp;<span class="tgr">confirmed</span></span>
+        <span class="tl"><span class="tgold">&nbsp;&nbsp;vk.com</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tgr">confirmed</span></span>
+        <span class="tl"><span class="tgold">&nbsp;&nbsp;[+48 more]</span>&nbsp;&nbsp;<span class="tgr">various</span></span>
+        <span class="tl">&nbsp;</span>
+        <span class="tl"><span class="tgr">$</span> <span class="tg">status</span></span>
+        <span class="tl"><span class="tg">&nbsp;&nbsp;● AVAILABLE FOR HIRE</span><span class="blink"></span></span>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- TICKER -->
+<div class="ticker-strip">
+  <div class="ticker-track">
+    <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Facebook — Hall of Fame</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>VK.com — Bug Bounty</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>WordPress · Joomla · Drupal</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>50+ Bug Bounty Reports</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>15 Years Experience</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>Server Security</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Full-Stack Developer</div><span class="tsep">·</span>
+    <!-- duplicate for loop -->
+    <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Facebook — Hall of Fame</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>VK.com — Bug Bounty</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>WordPress · Joomla · Drupal</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>50+ Bug Bounty Reports</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>15 Years Experience</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>Server Security</div><span class="tsep">·</span>
+    <div class="ti"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Full-Stack Developer</div>
+  </div>
+</div>
+
 <!-- ABOUT -->
 <section id="about">
-  <div class="section-header fade-up">
-    <div class="section-label">// 01. About me</div>
-    <h2 class="section-title">Code meets <span class="accent">Security</span></h2>
-    <div class="section-line"></div>
+  <div class="sh">
+    <span class="slabel">// 01 — about.me</span>
+    <h2 class="stitle">The Developer <span>Behind</span> the Code</h2>
+    <div class="sline"></div>
   </div>
   <div class="about-grid">
-    <div class="about-img-wrap fade-up">
-      <div class="about-img-frame">
-         <a target='_blank'><img src='https://i.postimg.cc/05CfZtpM/photo-3.jpg' border='0' alt='photo-3'></a>
+    <div class="photo-wrap">
+      <div class="photo-box">
+        <img src="https://i.postimg.cc/05CfZtpM/photo-3.jpg" alt="Profile Photo"/>
       </div>
-      <div class="about-img-accent"></div>
-      <div class="about-badge">9+ Years Exp.</div>
+      <div class="photo-badge">15 YRS EXPERIENCE</div>
     </div>
-    <div class="about-text fade-up">
-      <p>
-        I'm a full-stack developer and penetration tester with over 9 years of experience building production-grade web applications and securing them against real-world threats.
-      </p>
-      <p>
-        My approach is unique: I develop software with the mindset of an attacker — writing secure code by default, not as an afterthought. From architecture to deployment, security is baked into every layer.
-      </p>
-      <p>
-        I've reported vulnerabilities to companies like Vk, Facebook, and HackerOne top programs, and built dozens of web platforms ranging from SaaS dashboards to high-traffic e-commerce systems.
-      </p>
-      <div class="about-stats">
-        <div class="stat-item">
-          <div class="stat-num">47<span>+</span></div>
-          <div class="stat-label">Projects Built</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">120<span>+</span></div>
-          <div class="stat-label">Bugs Found</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">18<span>k</span></div>
-          <div class="stat-label">USD Earned (BB)</div>
-        </div>
+    <div class="about-text">
+      <h3>Security-First Developer &amp; Bug Bounty Hunter</h3>
+      <p>I am a full-stack web developer and cybersecurity researcher with <strong>15 years of hands-on experience</strong> building secure, scalable web applications and identifying critical vulnerabilities in production systems.</p>
+      <p>I build professional websites using <strong>WordPress, Joomla, Drupal, PrestaShop, Magento</strong> and custom-coded solutions — fully tailored to client needs with security hardening from day one.</p>
+      <p>My security research has led to responsible disclosure of <strong>vulnerabilities in major platforms</strong> including Facebook and VK.com, earning recognition in their official Hall of Fame programs.</p>
+      <div class="about-cards">
+        <div class="ac"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><strong>50+ Vulnerabilities</strong><span>Responsibly disclosed</span></div></div>
+        <div class="ac"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div><strong>15 Years</strong><span>Professional experience</span></div></div>
+        <div class="ac"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div><strong>CMS Expert</strong><span>WordPress, Joomla, Drupal</span></div></div>
+        <div class="ac"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div><strong>Available</strong><span>Freelance &amp; consulting</span></div></div>
       </div>
-      <div class="skills-list">
-        <span class="skill-tag">React</span>
-        <span class="skill-tag">Next.js</span>
-        <span class="skill-tag">Node.js</span>
-        <span class="skill-tag">TypeScript</span>
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">Burp Suite</span>
-        <span class="skill-tag">OWASP</span>
-        <span class="skill-tag">Metasploit</span>
-        <span class="skill-tag">Docker</span>
-        <span class="skill-tag">PostgreSQL</span>
-        <span class="skill-tag">AWS</span>
-        <span class="skill-tag">Kali Linux</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY RESEARCH -->
+<section id="research" class="dark-section">
+  <div class="sh">
+    <span class="slabel">// 02 — security_research</span>
+    <h2 class="stitle">Vulnerability <span>Research</span></h2>
+    <div class="sline"></div>
+  </div>
+  <p class="research-intro">I specialize in identifying and responsibly disclosing vulnerabilities in web applications, APIs, and server infrastructure. Below are the main vulnerability classes I research and hunt.</p>
+  <div class="vuln-grid">
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">💉</span><span class="vuln-badge vc-crit">Critical</span></div>
+      <div class="vuln-name">SQL Injection</div>
+      <div class="vuln-cwe">CWE-89 / OWASP A03</div>
+      <p class="vuln-desc">Database manipulation via unsanitized inputs. Can lead to full data exfiltration or remote code execution.</p>
+    </div>
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">🔀</span><span class="vuln-badge vc-high">High</span></div>
+      <div class="vuln-name">XSS</div>
+      <div class="vuln-cwe">CWE-79 / OWASP A03</div>
+      <p class="vuln-desc">Cross-site scripting enables session hijacking, phishing overlays, and client-side malware injection.</p>
+    </div>
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">🔗</span><span class="vuln-badge vc-crit">Critical</span></div>
+      <div class="vuln-name">SSRF</div>
+      <div class="vuln-cwe">CWE-918 / OWASP A10</div>
+      <p class="vuln-desc">Server-side request forgery forces servers to make internal requests, exposing cloud metadata.</p>
+    </div>
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">🔑</span><span class="vuln-badge vc-crit">Critical</span></div>
+      <div class="vuln-name">Broken Auth</div>
+      <div class="vuln-cwe">CWE-287 / OWASP A07</div>
+      <p class="vuln-desc">Weak authentication flows, predictable tokens, or improper session management allow account takeover.</p>
+    </div>
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">📁</span><span class="vuln-badge vc-high">High</span></div>
+      <div class="vuln-name">Path Traversal</div>
+      <div class="vuln-cwe">CWE-22 / OWASP A01</div>
+      <p class="vuln-desc">Directory traversal attacks allow reading arbitrary files outside the web root, leaking sensitive configs.</p>
+    </div>
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">🌐</span><span class="vuln-badge vc-med">Medium</span></div>
+      <div class="vuln-name">CSRF</div>
+      <div class="vuln-cwe">CWE-352 / OWASP A01</div>
+      <p class="vuln-desc">Cross-site request forgery tricks authenticated users into executing unwanted state-changing actions.</p>
+    </div>
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">⚙️</span><span class="vuln-badge vc-med">Medium</span></div>
+      <div class="vuln-name">Misconfiguration</div>
+      <div class="vuln-cwe">CWE-16 / OWASP A05</div>
+      <p class="vuln-desc">Security misconfigs including open S3 buckets, exposed admin panels, and verbose error messages.</p>
+    </div>
+    <div class="vuln-card">
+      <div class="vuln-top"><span class="vuln-icon">🔓</span><span class="vuln-badge vc-high">High</span></div>
+      <div class="vuln-name">IDOR</div>
+      <div class="vuln-cwe">CWE-639 / OWASP A01</div>
+      <p class="vuln-desc">Insecure direct object reference flaws let users access or modify other users' data by changing IDs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HALL OF FAME -->
+<section id="bugs">
+  <div class="sh">
+    <span class="slabel">// 03 — hall_of_fame</span>
+    <h2 class="stitle">Notable <span>Disclosures</span></h2>
+    <div class="sline"></div>
+  </div>
+  <div class="bugs-grid">
+    <div class="bug-card">
+      <span class="bug-year">2021</span>
+      <div class="sev sev-c">Critical</div>
+      <div class="bug-target">Facebook / Meta</div>
+      <p class="bug-desc">Discovered a critical security vulnerability in Facebook's platform affecting millions of users. Responsibly reported and acknowledged in Meta's official security Hall of Fame.</p>
+    </div>
+    <div class="bug-card">
+      <span class="bug-year">2020</span>
+      <div class="sev sev-h">High</div>
+      <div class="bug-target">VK.com</div>
+      <p class="bug-desc">Identified a critical security vulnerability in VK's platform infrastructure. Responsibly disclosed and acknowledged by VK's security team in their official bug bounty program.</p>
+    </div>
+    <div class="bug-card">
+      <span class="bug-year">2022</span>
+      <div class="sev sev-c">Critical</div>
+      <div class="bug-target">Multiple Platforms</div>
+      <p class="bug-desc">Uncovered critical vulnerabilities leading to severe impact on several high-traffic web platforms. All findings responsibly disclosed to respective security teams.</p>
+    </div>
+    <div class="bug-card">
+      <span class="bug-year">2019–2024</span>
+      <div class="sev sev-m">Medium–High</div>
+      <div class="bug-target">Server Infrastructure</div>
+      <p class="bug-desc">Identified server misconfigurations, exposed admin panels, and privilege escalation paths across various companies through authorized penetration testing engagements.</p>
+    </div>
+    <div class="bug-card">
+      <span class="bug-year">2023</span>
+      <div class="sev sev-h">High</div>
+      <div class="bug-target">E-Commerce Platforms</div>
+      <p class="bug-desc">Found critical access control flaws in multiple e-commerce platforms, exposing customer data and order management systems to unauthorized access.</p>
+    </div>
+    <div class="bug-card">
+      <span class="bug-year">Ongoing</span>
+      <div class="sev sev-m">Various</div>
+      <div class="bug-target">50+ Platforms Total</div>
+      <p class="bug-desc">Active bug bounty hunter with 50+ accepted reports across major platforms. Specialized in web application security, API vulnerabilities, and business logic flaws.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sh">
+    <span class="slabel">// 04 — skills.json</span>
+    <h2 class="stitle">Technical <span>Arsenal</span></h2>
+    <div class="sline"></div>
+  </div>
+  <div class="skills-grid">
+    <div>
+      <div class="sg-title">Security &amp; Pentesting</div>
+      <div class="sk-list">
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Web App Security</span><span class="sk-pct">98%</span></div><div class="sk-bar"><div class="sk-fill" style="width:98%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>Server Pen Testing</span><span class="sk-pct">95%</span></div><div class="sk-bar"><div class="sk-fill" style="width:95%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>API Security</span><span class="sk-pct">93%</span></div><div class="sk-bar"><div class="sk-fill" style="width:93%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>SQL Injection / XSS</span><span class="sk-pct">97%</span></div><div class="sk-bar"><div class="sk-fill" style="width:97%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>OWASP Top 10</span><span class="sk-pct">99%</span></div><div class="sk-bar"><div class="sk-fill" style="width:99%"></div></div></div>
+      </div>
+      <div class="sg-title mt">Security Tools</div>
+      <div class="chips">
+        <span class="chip">Burp Suite</span><span class="chip">Metasploit</span><span class="chip">Nmap</span>
+        <span class="chip">Wireshark</span><span class="chip">SQLMap</span><span class="chip">OWASP ZAP</span>
+        <span class="chip">Nikto</span><span class="chip">Nessus</span><span class="chip">Hydra</span><span class="chip">Shodan</span>
+      </div>
+    </div>
+    <div>
+      <div class="sg-title">Web Development</div>
+      <div class="sk-list">
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>JavaScript / TypeScript</span><span class="sk-pct">96%</span></div><div class="sk-bar"><div class="sk-fill" style="width:96%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>Node.js / PHP / Python</span><span class="sk-pct">92%</span></div><div class="sk-bar"><div class="sk-fill" style="width:92%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>React / Vue / Next.js</span><span class="sk-pct">90%</span></div><div class="sk-bar"><div class="sk-fill" style="width:90%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>MySQL / PostgreSQL</span><span class="sk-pct">91%</span></div><div class="sk-bar"><div class="sk-fill" style="width:91%"></div></div></div>
+        <div><div class="sk-info"><span class="sk-name"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>Linux / Nginx / Apache</span><span class="sk-pct">94%</span></div><div class="sk-bar"><div class="sk-fill" style="width:94%"></div></div></div>
+      </div>
+      <div class="sg-title mt">Dev Stack</div>
+      <div class="chips">
+        <span class="chip">WordPress</span><span class="chip">Joomla</span><span class="chip">Drupal</span>
+        <span class="chip">PrestaShop</span><span class="chip">Magento</span><span class="chip">React</span>
+        <span class="chip">Next.js</span><span class="chip">Node.js</span><span class="chip">PHP</span>
+        <span class="chip">Python</span><span class="chip">Docker</span><span class="chip">Git</span>
+        <span class="chip">Linux</span><span class="chip">MySQL</span><span class="chip">MongoDB</span><span class="chip">AWS</span>
       </div>
     </div>
   </div>
@@ -668,369 +544,174 @@
 
 <!-- PROJECTS -->
 <section id="projects">
-  <div class="section-header fade-up">
-    <div class="section-label">// 02. My Projects</div>
-    <h2 class="section-title">Selected <span class="accent">Work</span></h2>
-    <div class="section-line"></div>
+  <div class="sh">
+    <span class="slabel">// 05 — projects[]</span>
+    <h2 class="stitle">Selected <span>Work</span></h2>
+    <div class="sline"></div>
   </div>
-  <div class="projects-grid">
-
-    <div class="project-card fade-up">
-      <img class="project-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="SaaS Dashboard" />
-      <div class="project-body">
-        <div class="project-type">// Web App</div>
-        <div class="project-name">DataPulse Analytics</div>
-        <div class="project-desc">Real-time SaaS analytics dashboard with role-based access, WebSocket live updates, and advanced data visualization.</div>
-        <div class="project-tags">
-          <span class="ptag">React</span><span class="ptag">Node.js</span><span class="ptag">PostgreSQL</span><span class="ptag">AWS</span>
-        </div>
-        <a href="#" class="project-link">View Project →</a>
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="proj-top">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80" alt="Cybersecurity scanner" loading="lazy"/>
+        <div class="proj-top-overlay"></div>
+        <div class="proj-top-pat"></div>
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="pt">Security</span><span class="pt">Node.js</span></div>
+        <div class="proj-title">VulnScanner Pro</div>
+        <p class="proj-desc">Automated web vulnerability scanner detecting XSS, SQLi, CSRF, open redirects, and misconfigurations across web applications.</p>
+        <a href="#" class="proj-link">View Project <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
     </div>
-
-    <div class="project-card fade-up">
-      <img class="project-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&q=80" alt="E-Commerce" />
-      <div class="project-body">
-        <div class="project-type">// E-Commerce</div>
-        <div class="project-name">ShopForge Platform</div>
-        <div class="project-desc">Multi-vendor e-commerce platform with Stripe integration, inventory management, and a custom CMS backend.</div>
-        <div class="project-tags">
-          <span class="ptag">Next.js</span><span class="ptag">Stripe</span><span class="ptag">MongoDB</span>
-        </div>
-        <a href="#" class="project-link">View Project →</a>
+    <div class="proj-card">
+      <div class="proj-top">
+        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80" alt="Website development" loading="lazy"/>
+        <div class="proj-top-overlay"></div>
+        <div class="proj-top-pat"></div>
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="pt">WordPress</span><span class="pt">Joomla</span><span class="pt">Drupal</span></div>
+        <div class="proj-title">CMS Website Development</div>
+        <p class="proj-desc">Custom website builds using WordPress, Joomla, Drupal, PrestaShop and more — tailored themes, plugins, e-commerce integrations, and full security hardening.</p>
+        <a href="#" class="proj-link">View Projects <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
     </div>
-
-    <div class="project-card fade-up">
-      <img class="project-img" src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80" alt="Security Tool" />
-      <div class="project-body">
-        <div class="project-type">// Security Tool</div>
-        <div class="project-name">VulnScan Pro</div>
-        <div class="project-desc">Automated web vulnerability scanner that detects XSS, SQLi, SSRF, and misconfigured headers with detailed reporting.</div>
-        <div class="project-tags">
-          <span class="ptag">Python</span><span class="ptag">FastAPI</span><span class="ptag">Docker</span>
-        </div>
-        <a href="#" class="project-link">View Project →</a>
+    <div class="proj-card">
+      <div class="proj-top">
+        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80" alt="API security" loading="lazy"/>
+        <div class="proj-top-overlay"></div>
+        <div class="proj-top-pat"></div>
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
       </div>
-    </div>
-
-    <div class="project-card fade-up">
-      <img class="project-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Mobile App" />
-      <div class="project-body">
-        <div class="project-type">// Mobile PWA</div>
-        <div class="project-name">FieldOps Manager</div>
-        <div class="project-desc">Progressive web app for field teams with offline support, GPS tracking, and real-time sync via WebSocket.</div>
-        <div class="project-tags">
-          <span class="ptag">Vue.js</span><span class="ptag">PWA</span><span class="ptag">IndexedDB</span>
-        </div>
-        <a href="#" class="project-link">View Project →</a>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="pt">Python</span><span class="pt">Pentesting</span></div>
+        <div class="proj-title">API Fuzzer Tool</div>
+        <p class="proj-desc">Python-based API fuzzing tool for discovering broken authentication, rate-limiting bypasses, and hidden endpoints in REST and GraphQL APIs.</p>
+        <a href="#" class="proj-link">View Project <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
-    </div>
-
-    <div class="project-card fade-up">
-      <img class="project-img" src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=600&q=80" alt="API Platform" />
-      <div class="project-body">
-        <div class="project-type">// API Platform</div>
-        <div class="project-name">NexAPI Gateway</div>
-        <div class="project-desc">Secure API gateway with rate limiting, JWT auth, and real-time monitoring. Handles 1M+ requests/day.</div>
-        <div class="project-tags">
-          <span class="ptag">Node.js</span><span class="ptag">Redis</span><span class="ptag">Nginx</span>
-        </div>
-        <a href="#" class="project-link">View Project →</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-up">
-      <img class="project-img" src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600&q=80" alt="Pentest Report" />
-      <div class="project-body">
-        <div class="project-type">// Pentest Report</div>
-        <div class="project-name">BankCore Security Audit</div>
-        <div class="project-desc">Full penetration test for a fintech platform. Uncovered 3 critical, 7 high severity vulnerabilities before launch.</div>
-        <div class="project-tags">
-          <span class="ptag">Burp Suite</span><span class="ptag">OWASP</span><span class="ptag">Report</span>
-        </div>
-        <a href="#" class="project-link">View Case Study →</a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- VULNERABILITIES -->
-<section id="vulnerabilities">
-  <div class="section-header fade-up">
-    <div class="section-label">// 03. Security Research</div>
-    <h2 class="section-title">Vulnerability <span class="accent">Research</span></h2>
-    <div class="section-line"></div>
-  </div>
-  <p class="vuln-intro fade-up">
-    I specialize in identifying and responsibly disclosing vulnerabilities in web applications, APIs, and cloud infrastructure. Below are the main vulnerability classes I research and hunt.
-  </p>
-
-  <div class="vuln-grid fade-up">
-    <div class="vuln-card">
-      <span class="vuln-icon">💉</span>
-      <div class="vuln-name">SQL Injection</div>
-      <div class="vuln-code">CWE-89 / OWASP A03</div>
-      <div class="vuln-desc">Database manipulation via unsanitized inputs. Can lead to full data exfiltration or remote code execution.</div>
-      <span class="severity sev-critical">Critical</span>
-    </div>
-    <div class="vuln-card">
-      <span class="vuln-icon">🔀</span>
-      <div class="vuln-name">XSS</div>
-      <div class="vuln-code">CWE-79 / OWASP A03</div>
-      <div class="vuln-desc">Cross-site scripting enables session hijacking, phishing overlays, and client-side malware injection.</div>
-      <span class="severity sev-high">High</span>
-    </div>
-    <div class="vuln-card">
-      <span class="vuln-icon">🔗</span>
-      <div class="vuln-name">SSRF</div>
-      <div class="vuln-code">CWE-918 / OWASP A10</div>
-      <div class="vuln-desc">Server-side request forgery forces servers to make requests to internal resources, exposing cloud metadata.</div>
-      <span class="severity sev-critical">Critical</span>
-    </div>
-    <div class="vuln-card">
-      <span class="vuln-icon">🔑</span>
-      <div class="vuln-name">Broken Auth</div>
-      <div class="vuln-code">CWE-287 / OWASP A07</div>
-      <div class="vuln-desc">Weak authentication flows, predictable tokens, or improper session management allow account takeover.</div>
-      <span class="severity sev-critical">Critical</span>
-    </div>
-    <div class="vuln-card">
-      <span class="vuln-icon">📁</span>
-      <div class="vuln-name">Path Traversal</div>
-      <div class="vuln-code">CWE-22 / OWASP A01</div>
-      <div class="vuln-desc">Directory traversal attacks allow reading arbitrary files outside the web root, leaking sensitive configs.</div>
-      <span class="severity sev-high">High</span>
-    </div>
-    <div class="vuln-card">
-      <span class="vuln-icon">🌐</span>
-      <div class="vuln-name">CSRF</div>
-      <div class="vuln-code">CWE-352 / OWASP A01</div>
-      <div class="vuln-desc">Cross-site request forgery tricks authenticated users into executing unwanted state-changing actions.</div>
-      <span class="severity sev-medium">Medium</span>
-    </div>
-    <div class="vuln-card">
-      <span class="vuln-icon">⚙️</span>
-      <div class="vuln-name">Misconfiguration</div>
-      <div class="vuln-code">CWE-16 / OWASP A05</div>
-      <div class="vuln-desc">Security misconfigs including open S3 buckets, exposed admin panels, and verbose error messages.</div>
-      <span class="severity sev-medium">Medium</span>
-    </div>
-    <div class="vuln-card">
-      <span class="vuln-icon">🔓</span>
-      <div class="vuln-name">IDOR</div>
-      <div class="vuln-code">CWE-639 / OWASP A01</div>
-      <div class="vuln-desc">Insecure direct object reference flaws let users access or modify other users' data by changing IDs.</div>
-      <span class="severity sev-high">High</span>
-    </div>
-  </div>
-
-  <!-- CVE Table -->
-  <div class="cve-showcase fade-up">
-    <div class="cve-title">// notable disclosures</div>
-    <div class="cve-list">
-      <div class="cve-row">
-        <span class="cve-id">CVE-2024-3821</span>
-        <span class="cve-name">Auth Bypass in OAuth Flow — Major SaaS Platform</span>
-        <span class="cve-type">Broken Auth</span>
-        <span class="cve-score score-9">9.1</span>
-      </div>
-      <div class="cve-row">
-        <span class="cve-id">CVE-2024-1205</span>
-        <span class="cve-name">Blind SSRF via PDF Generator — Fintech API</span>
-        <span class="cve-type">SSRF</span>
-        <span class="cve-score score-9">8.6</span>
-      </div>
-      <div class="cve-row">
-        <span class="cve-id">CVE-2023-9944</span>
-        <span class="cve-name">Stored XSS in Profile Bio — Social Platform</span>
-        <span class="cve-type">XSS</span>
-        <span class="cve-score score-7">7.4</span>
-      </div>
-      <div class="cve-row">
-        <span class="cve-id">CVE-2023-6102</span>
-        <span class="cve-name">SQL Injection in Search Parameter — E-Commerce CMS</span>
-        <span class="cve-type">SQLi</span>
-        <span class="cve-score score-9">9.8</span>
-      </div>
-      <div class="cve-row">
-        <span class="cve-id">BUG-2024-HO-881</span>
-        <span class="cve-name">Mass IDOR on User Records — HackerOne Top 100</span>
-        <span class="cve-type">IDOR</span>
-        <span class="cve-score score-7">7.9</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TOOLS -->
-<section id="tools">
-  <div class="section-header fade-up">
-    <div class="section-label">// 04. Open Source</div>
-    <h2 class="section-title">Tools & <span class="accent">Scripts</span></h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="tools-grid">
-    <div class="tool-card fade-up">
-      <div class="tool-card-number">01</div>
-      <div class="tool-icon-wrap">🕷️</div>
-      <div class="tool-name">WebCrawlX</div>
-      <div class="tool-desc">A fast, headless web crawler for recon and endpoint discovery. Detects hidden parameters and JS endpoints automatically.</div>
-      <div class="tool-tech">Python · Playwright · CLI</div>
-    </div>
-    <div class="tool-card fade-up">
-      <div class="tool-card-number">02</div>
-      <div class="tool-icon-wrap">🎯</div>
-      <div class="tool-name">ParamHunter</div>
-      <div class="tool-desc">Automated parameter fuzzer that probes for injection points across GET/POST params with customizable payloads.</div>
-      <div class="tool-tech">Go · Burp Extension · REST</div>
-    </div>
-    <div class="tool-card fade-up">
-      <div class="tool-card-number">03</div>
-      <div class="tool-icon-wrap">🔍</div>
-      <div class="tool-name">JWTBreaker</div>
-      <div class="tool-desc">JWT token analysis tool that tests for algorithm confusion, weak secrets, and improper signature validation.</div>
-      <div class="tool-tech">Node.js · CLI · Open Source</div>
-    </div>
-    <div class="tool-card fade-up">
-      <div class="tool-card-number">04</div>
-      <div class="tool-icon-wrap">📡</div>
-      <div class="tool-name">SubEnum Pro</div>
-      <div class="tool-desc">Subdomain enumeration combining passive DNS, certificate transparency logs, and brute-forcing with smart wordlists.</div>
-      <div class="tool-tech">Python · API Integration</div>
-    </div>
-    <div class="tool-card fade-up">
-      <div class="tool-card-number">05</div>
-      <div class="tool-icon-wrap">🛡️</div>
-      <div class="tool-name">HeaderGuard</div>
-      <div class="tool-desc">Express.js middleware that automatically applies OWASP-recommended security headers with zero configuration.</div>
-      <div class="tool-tech">Node.js · NPM Package</div>
-    </div>
-    <div class="tool-card fade-up">
-      <div class="tool-card-number">06</div>
-      <div class="tool-icon-wrap">📊</div>
-      <div class="tool-name">VulnReport Gen</div>
-      <div class="tool-desc">Generates professional penetration test reports in PDF/HTML from structured JSON findings. Used by 200+ researchers.</div>
-      <div class="tool-tech">Python · Jinja2 · PDF</div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
-  <div class="section-header fade-up">
-    <div class="section-label">// 05. Contact</div>
-    <h2 class="section-title">Let's <span class="accent">Connect</span></h2>
-    <div class="section-line"></div>
+<section id="contact" class="dark-section">
+  <div class="sh">
+    <span class="slabel">// 06 — contact.init()</span>
+    <h2 class="stitle">Let's <span>Work Together</span></h2>
+    <div class="sline"></div>
   </div>
-  <div class="contact-wrap">
-    <div class="contact-info fade-up">
-      <h3>Open to New Projects</h3>
-      <p>Whether you need a high-performance web application built, a security audit conducted, or a bug bounty consultant on your team — let's talk.</p>
-      <div class="contact-items">
-        <div class="contact-item">
-          <div class="contact-icon">📧</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">Email</div>
-            <div class="contact-item-val">Afra.Dev@protonmail.com</div>
-          </div>
+  <div class="contact-grid">
+    <div>
+      <p class="c-desc">Whether you need a <strong style="color:#fff">secure web application</strong>, a <strong style="color:#fff">penetration test</strong>, or a <strong style="color:#fff">security audit</strong> — I'm available for freelance and consulting work.</p>
+      <div class="c-rows">
+        <div class="c-row">
+          <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="c-info"><span>Email</span><strong>contact@afradev.com</strong></div>
         </div>
-        <div class="contact-item">
-          <div class="contact-icon">💬</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">WhatsApp</div>
-            <div class="contact-item-val">+1 (555) 023-4891</div>
-          </div>
+        <div class="c-row">
+          <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+          <div class="c-info"><span>Location</span><strong>Morocco 🇲🇦</strong></div>
         </div>
-        <div class="contact-item">
-          <div class="contact-icon">🔗</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">LinkedIn</div>
-            <div class="contact-item-val">linkedin.com/in/AfraDev</div>
-          </div>
+        <div class="c-row">
+          <div class="c-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="c-info"><span>Response Time</span><strong>Within 24 hours</strong></div>
         </div>
-        <div class="contact-item">
-          <div class="contact-icon">🐙</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">GitHub</div>
-            <div class="contact-item-val">github.com/AfraDev-sec</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">🏆</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">HackerOne</div>
-            <div class="contact-item-val">hackerone.com/AfraDev</div>
-          </div>
+        <div class="c-row">
+          <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="c-info"><span>Status</span><strong style="color:var(--green)">● Open to Work</strong></div>
         </div>
       </div>
     </div>
-    <div class="contact-form fade-up">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Name</label>
-          <input class="form-input" type="text" placeholder="Your name" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" type="email" placeholder="your@email.com" />
-        </div>
+    <form class="c-form" id="contactForm" action="https://formspree.io/f/xeorroln" method="POST">
+      <div class="cf-row">
+        <div class="cf-g"><label>Name</label><input type="text" name="name" placeholder="Your name" required/></div>
+        <div class="cf-g"><label>Email</label><input type="email" name="email" placeholder="your@email.com" required/></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Subject</label>
-        <input class="form-input" type="text" placeholder="Project inquiry / Security audit / Other" />
+      <div class="cf-g"><label>Subject</label><input type="text" name="subject" placeholder="Project / Security Audit / Consultation" required/></div>
+      <div class="cf-g"><label>Message</label><textarea name="message" placeholder="Tell me about your project or security needs..." required></textarea></div>
+      <button class="btn-send" type="submit" id="sendBtn">Send Message →</button>
+      <div id="formSuccess" style="display:none;margin-top:14px;font-family:var(--mono);font-size:.78rem;color:var(--green);letter-spacing:1px;">
+        ✓ Message sent! I'll get back to you within 24 hours.
       </div>
-      <div class="form-group">
-        <label class="form-label">Message</label>
-        <textarea class="form-textarea" placeholder="Tell me about your project or security needs..."></textarea>
+      <div id="formError" style="display:none;margin-top:14px;font-family:var(--mono);font-size:.78rem;color:#e53935;letter-spacing:1px;">
+        ✗ Something went wrong. Please try again.
       </div>
-      <button class="form-submit">Send Message →</button>
-    </div>
+    </form>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <p>© 2016-2025 <span>Afra Dev</span> — Built with precision. Secured by design.</p>
+  <div class="f-logo">Afra<span> Dev</span></div>
+  <div class="f-copy">© 2025 — Built with precision &amp; security in mind</div>
+  <div class="f-soc">
+    <a href="#" title="GitHub"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+    <a href="#" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
 </footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  function animCursor() {
-    cursor.style.transform = `translate(${mx-6}px, ${my-6}px)`;
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
-    requestAnimationFrame(animCursor);
+  // Hamburger
+  const hamburger = document.getElementById("hamburger");
+  const drawer    = document.getElementById("navDrawer");
+  hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("open");
+    drawer.classList.toggle("open");
+    document.body.style.overflow = drawer.classList.contains("open") ? "hidden" : "";
+  });
+  function closeDrawer() {
+    hamburger.classList.remove("open");
+    drawer.classList.remove("open");
+    document.body.style.overflow = "";
   }
-  animCursor();
-  document.querySelectorAll('a, button, .project-card, .vuln-card, .tool-card, .nav-links li').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('expand'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
-  });
 
-  // Scroll fade-up
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), e.target.dataset.delay || 0);
-      }
+  // Active dot on scroll
+  const sections = ["about","research","bugs","skills","projects","contact"];
+  const dots     = document.querySelectorAll(".nav-dots-inner .ndot");
+  const dotLinks = document.querySelectorAll(".ndot-link");
+  window.addEventListener("scroll", () => {
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) current = i;
     });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.fade-up').forEach((el, i) => {
-    el.dataset.delay = (i % 4) * 80;
-    observer.observe(el);
+    dots.forEach((d, i)     => d.classList.toggle("active", i === current));
+    dotLinks.forEach((l, i) => l.classList.toggle("active-link", i === current));
   });
 
-  // Typing effect for terminal
-  const lines = document.querySelectorAll('.typing-line');
-  lines.forEach((line, i) => {
-    line.style.animationDelay = `${i * 1.2}s`;
+  // Contact form — Formspree
+  const form    = document.getElementById('contactForm');
+  const sendBtn = document.getElementById('sendBtn');
+  const formOk  = document.getElementById('formSuccess');
+  const formErr = document.getElementById('formError');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    sendBtn.textContent = 'Sending...';
+    sendBtn.disabled = true;
+    formOk.style.display = 'none';
+    formErr.style.display = 'none';
+    try {
+      const res = await fetch('https://formspree.io/f/xeorroln', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        formOk.style.display = 'block';
+        form.reset();
+        sendBtn.textContent = '✓ Sent!';
+      } else {
+        formErr.style.display = 'block';
+        sendBtn.textContent = 'Send Message →';
+        sendBtn.disabled = false;
+      }
+    } catch {
+      formErr.style.display = 'block';
+      sendBtn.textContent = 'Send Message →';
+      sendBtn.disabled = false;
+    }
   });
 </script>
 </body>
